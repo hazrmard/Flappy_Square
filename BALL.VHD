@@ -8,8 +8,7 @@ use IEEE.std_logic_arith.all;
 
 ENTITY ball IS
 
-   PORT(
-		  reset, jump: in std_logic;
+   PORT(reset, jump, slide_l, slide_r: in std_logic;
 		  pixel_row, pixel_column		: IN std_logic_vector(9 DOWNTO 0);
         Red,Green,Blue 				: OUT std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
@@ -29,17 +28,21 @@ SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 SIGNAL dir: move_flag;
 
 
+component enemy IS
+
+   PORT(reset: IN std_logic;
+		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+		  );
+ 
+END component;
+
+
 BEGIN           
 
 Size <= CONV_STD_LOGIC_VECTOR(8,10);
 Ball_X_pos <= CONV_STD_LOGIC_VECTOR(120,10);
 
 
-		-- Colors for pixel data on video signal
-Red <=  '1';
-		-- Turn off Green and Blue when displaying ball
-Green <= NOT Ball_on;
-Blue <=  NOT Ball_on;
 
 RGB_Display: Process (Ball_X_pos, Ball_Y_pos, pixel_column, pixel_row, Size)
 BEGIN
@@ -49,9 +52,18 @@ BEGIN
  	(Ball_X_pos + Size >= '0' & pixel_column) AND
  	('0' & Ball_Y_pos <= pixel_row + Size) AND
  	(Ball_Y_pos + Size >= '0' & pixel_row ) THEN
- 		Ball_on <= '1';
+ 		RED <= '1';
+		GREEN <= '0';
+		BLUE <= '0';
+		--TODO update enemy pos
+	ELSIF (enemy_pos)
+		RED <= '0';
+		GREEN <= '1';
+		BLUE <= '0';
  	ELSE
- 		Ball_on <= '0';
+ 		RED <= '1';
+		GREEN <= '1';
+		BLUE <= '1';
 END IF;
 END process RGB_Display;
 
@@ -89,6 +101,6 @@ END process;
 x <= BALL_X_POS;
 y <= BALL_Y_POS;
 
-
+--TODO: Collision collider
 END behavior;
 

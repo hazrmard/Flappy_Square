@@ -85,8 +85,7 @@ END COMPONENT;
 
 COMPONENT ball
 
-   PORT(
-		  reset, jump: in std_logic;
+    PORT(reset, jump, slide_l, slide_r: in std_logic;
 		  pixel_row, pixel_column		: IN std_logic_vector(9 DOWNTO 0);
         Red,Green,Blue 				: OUT std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
@@ -111,23 +110,14 @@ SIGNAL vert_sync_int : STD_LOGIC;
 SIGNAL horiz_sync_int : STD_LOGIC; 
 SIGNAL pixel_clock_int : STD_LOGIC;
 SIGNAL pixel_row_int :STD_LOGIC_VECTOR(9 DOWNTO 0); 
-SIGNAL pixel_column_int :STD_LOGIC_VECTOR(9 DOWNTO 0); 
-SIGNAL pseudo_button: STD_LOGIC;
+SIGNAL pixel_column_int :STD_LOGIC_VECTOR(9 DOWNTO 0);
+
+--Debounce 
+SIGNAL jump, slide_l, slide_r: STD_LOGIC;
 
 SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
-
-component enemy 
-   PORT(
-		  reset, jump: in std_logic;
-		  pixel_row, pixel_column		: IN std_logic_vector(9 DOWNTO 0);
-        Red,Green,Blue 				: OUT std_logic;
-		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
-        Vert_sync	: IN std_logic);
- 
-END component;
-
 
 BEGIN
 
@@ -157,49 +147,31 @@ BEGIN
 
 	U2: ball PORT MAP
 		(reset			=> reset,
-		 jump				=> pseudo_button,
+		 jump				=> jump,
+		 slide_l			=> slide_l,
+		 slide_r			=> slide-r,
 		 pixel_row		=> pixel_row_int,
 		 pixel_column	=> pixel_column_int,
 		 Red				=> red_int,
 		 Green			=> green_int,
 		 Blue				=> blue_int,
-		 x					=> ball_x,
-		 y 				=> ball_y,
 		 Vert_sync		=> vert_sync_int
 		);
 		
 	U3: Debounce Port Map
 		(CLK => clock_50,
 		 x => KEY(0),
-		 Dbx => pseudo_button);
+		 Dbx => jump);
 		 
-	U4: enemy PORT MAP
-		(reset			=> reset,
-		 jump				=> pseudo_button,
-		 pixel_row		=> pixel_row_int,
-		 pixel_column	=> pixel_column_int,
-		 Red				=> red_int,
-		 Green			=> green_int,
-		 Blue				=> blue_int,
-		 x					=> enemy_x,
-		 y 				=> enemy_y,
-		 Vert_sync		=> vert_sync_int
-		);
+	U4: Debounce Port Map
+		(CLK => clock_50,
+		 x => KEY(0),
+		 Dbx => slide_l);
 	
-collision: process(ball_x, ball_y, enemy_x, enemy_y)
-begin
-	if(ball_x = ENEMY_X + conv_std_logic_vector(5,10) OR
-		ball_x = ENEMY_X - conv_std_logic_vector(5,10)) then
-			if(ball_y = enemy_y + conv_std_logic_vector(5,10) OR
-			ball_y = enemy_y - conv_std_logic_vector(5,10)) then
-				reset <= '0';
-			else
-				reset <= '1';
-			end if;
-	else
-		reset <= '0';
-	end if;
-end process;
-				
+	U5: Debounce Port Map
+		(CLK => clock_50,
+		 x => KEY(0),
+		 Dbx => slide_r);
+		 
 END structural;
 
