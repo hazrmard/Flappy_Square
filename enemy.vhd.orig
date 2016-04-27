@@ -10,8 +10,14 @@ use ieee.numeric_std.all;
 
 ENTITY enemy IS
 
+<<<<<<< HEAD
+   PORT(reset		: IN std_logic;
+		  x, y 		: OUT STD_LOGIC_VECTOR (9 downto 0);
+		  Vert_sync	: IN std_logic
+=======
    PORT(reset, vsync: IN std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+>>>>>>> 0310cbad89c88088218cb3e86da1b8da305041b6
 		  );
  
 END enemy;
@@ -29,7 +35,7 @@ BEGIN
 
 --Bouncing enemy
 
-Move_Ball: process(RESET)--@@ Added sensitivity list
+Move_Ball: process
 	
 	variable seed1: integer:= 100;
 	variable seed2: integer:= 200;
@@ -38,9 +44,8 @@ Move_Ball: process(RESET)--@@ Added sensitivity list
 	
 BEGIN
 
-
-
 	if reset'event and reset='1' then
+		
 		uniform(seed1, seed2, rand1);
 		rint1:= integer(rand1 * real(612) - real(306)); -- random b/w -306 and +306
 		if rint1 < 0 then		-- left of center
@@ -49,13 +54,12 @@ BEGIN
 			Ball_X_pos <= std_logic_vector(to_unsigned(320 + rint1, 10));
 		end if;
 		
-		--@@ MODIFIED FOR Y AXIS
 		uniform(seed1, seed2, rand2);
 		rint2:= integer(rand2 * real(472) - real(236)); -- random b/w -306 and +306
 		if rint2 < 0 then		-- left of center
-			Ball_Y_pos <= std_logic_vector(to_unsigned(rint2, 10));
+			Ball_X_pos <= std_logic_vector(to_unsigned(rint2, 10));
 		else						-- right of center
-			Ball_Y_pos <= std_logic_vector(to_unsigned(240 + rint2, 10));
+			Ball_X_pos <= std_logic_vector(to_unsigned(320 + rint2, 10));
 		end if;	
 	
 	elsif vsync'event and vsync='1' then

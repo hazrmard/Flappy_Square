@@ -153,18 +153,11 @@ BEGIN
 		);
 
 	U2: ball PORT MAP
-<<<<<<< HEAD
 		(reset			=> SW(0),
 		 up				=> N_up,
 		 down				=> N_down,
 		 slide_l			=> N_slide_l,
 		 slide_r			=> N_slide_r,
-=======
-		(reset			=> reset,
-		 jump				=> jump,
-		 slide_l			=> slide_l,
-		 slide_r			=> slide_r,
->>>>>>> 0310cbad89c88088218cb3e86da1b8da305041b6
 		 pixel_row		=> pixel_row_int,
 		 pixel_column	=> pixel_column_int,
 		 Red				=> red_int,

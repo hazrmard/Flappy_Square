@@ -28,8 +28,10 @@ SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;
 
 -- Enemy stuffs
 component enemy IS
-   PORT(reset, vsync: IN std_logic;
-		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+   PORT
+		 (reset		: IN std_logic;
+		  x, y 		: OUT STD_LOGIC_VECTOR (9 downto 0);
+		  Vert_sync	: IN std_logic
 		  );
 END component;
 
@@ -86,9 +88,9 @@ GEN_ENEMY:
 	FOR I IN 0 TO 4 GENERATE
 		ENEMY_INST: ENEMY PORT MAP
 			(RESET 		=> RESET,
-			 VSYNC		=> VERT_SYNC,
 			 X				=> ENEMY_X(I),
-			 Y 			=> ENEMY_Y(I)
+			 Y 			=> ENEMY_Y(I),
+			 VERT_SYNC	=> VERT_SYNC
 			 );
 	END GENERATE;
 			 
@@ -97,6 +99,7 @@ BEGIN
 	--display ball
 	IF ('0' & Ball_X_pos <= pixel_column + Size) AND
  			-- compare positive numbers only
+<<<<<<< HEAD
 		(Ball_X_pos + Size >= '0' & pixel_column) AND
 		('0' & Ball_Y_pos <= pixel_row + Size) AND
 		(Ball_Y_pos + Size >= '0' & pixel_row ) THEN
@@ -107,6 +110,19 @@ BEGIN
 		TEMP_R <= '0';
 		TEMP_G <= '1';
 		TEMP_B <= '0';
+=======
+ 	(Ball_X_pos + Size >= '0' & pixel_column) AND
+ 	('0' & Ball_Y_pos <= pixel_row + Size) AND
+ 	(Ball_Y_pos + Size >= '0' & pixel_row ) THEN
+ 		RED <= '1';
+		GREEN <= '0';
+		BLUE <= '0';
+		--TODO update enemy pos
+--	ELSIF (enemy_pos) then
+--		RED <= '0';
+--		GREEN <= '1';
+--		BLUE <= '0';
+>>>>>>> 0310cbad89c88088218cb3e86da1b8da305041b6
  	ELSE
   		TEMP_R <= '1';
 		TEMP_G <= '1';
