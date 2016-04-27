@@ -27,9 +27,7 @@ SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 
 BEGIN           
 
---Bouncing enemy
-
-Move_Ball: process(RESET)--@@ Added sensitivity list
+Move_Ball: process(RESET, VSYNC)--@@ Added sensitivity list
 	
 	variable seed1: integer:= 100;
 	variable seed2: integer:= 200;
