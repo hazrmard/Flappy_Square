@@ -8,99 +8,156 @@ use IEEE.std_logic_arith.all;
 
 ENTITY ball IS
 
-   PORT(reset, jump, slide_l, slide_r: in std_logic;
-		  pixel_row, pixel_column		: IN std_logic_vector(9 DOWNTO 0);
-        Red,Green,Blue 				: OUT std_logic;
-		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
-        Vert_sync	: IN std_logic);
+   PORT
+		 (reset, up, down, slide_l, slide_r: in std_logic;
+		  pixel_row, pixel_column			  : IN std_logic_vector(9 DOWNTO 0);
+        Red,Green,Blue 						  : OUT std_logic;
+		  x, y 									  : OUT STD_LOGIC_VECTOR (9 downto 0);
+        Vert_sync								  : IN std_logic);
 		
 END ball;
 
+
 architecture behavior of ball is
 
-type move_flag is (up, down);
-
-			-- Video Display Signals   
-SIGNAL Ball_on, Direction			: std_logic;
+-- Video Display Signals   
+SIGNAL Ball_on						: std_logic;
 SIGNAL Size 						: std_logic_vector(9 DOWNTO 0);  
-SIGNAL Ball_Y_motion : std_logic_vector(9 DOWNTO 0);
-SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
-SIGNAL dir: move_flag;
+SIGNAL Ball_Y_pos, Ball_X_pos	: std_logic_vector(9 DOWNTO 0);
+SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;
 
-
+-- Enemy stuffs
 component enemy IS
-
-   PORT(reset: IN std_logic;
-		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+   PORT
+		 (reset		: IN std_logic;
+		  x, y 		: OUT STD_LOGIC_VECTOR (9 downto 0);
+		  Vert_sync	: IN std_logic
 		  );
- 
 END component;
 
+TYPE ENEMY_POINT is array (0 to 4) of std_logic_vector(9 downto 0);
+SIGNAL ENEMY_X, ENEMY_Y	: ENEMY_POINT; -- DEFINE ENEMIES LOCATION
+
+--UTILITY FUNCTIONS
+FUNCTION ENEMY_ON RETURN BOOLEAN IS -- TURN ON ENEMIES
+BEGIN
+	FOR I IN 0 TO 4 LOOP
+		IF ('0' & ENEMY_X(I) <= pixel_column + Size) AND
+			(ENEMY_X(I) + Size >= '0' & pixel_column) AND
+			('0' & ENEMY_Y(I) <= pixel_row + Size) AND
+			(ENEMY_Y(I) + Size >= '0' & pixel_row ) THEN
+				RETURN TRUE;
+		END IF;
+	END LOOP;
+	RETURN FALSE;
+END ENEMY_ON;
+
+SIGNAL ENEMY_ON_VALUE: BOOLEAN; -- FLAG FOR ENEMY_ON
+
+--TODO: Collision collider
 
 BEGIN           
 
-Size <= CONV_STD_LOGIC_VECTOR(8,10);
-Ball_X_pos <= CONV_STD_LOGIC_VECTOR(120,10);
+Size <= CONV_STD_LOGIC_VECTOR(8,10); -- DEFINE SIZE
 
+--ASSIGN OUTPUT FROM TEMP
+RED <= TEMP_R;
+GREEN <= TEMP_G;
+BLUE <= TEMP_B;
 
-
-RGB_Display: Process (Ball_X_pos, Ball_Y_pos, pixel_column, pixel_row, Size)
-BEGIN
-			-- Set Ball_on ='1' to display ball
- IF ('0' & Ball_X_pos <= pixel_column + Size) AND
- 			-- compare positive numbers only
- 	(Ball_X_pos + Size >= '0' & pixel_column) AND
- 	('0' & Ball_Y_pos <= pixel_row + Size) AND
- 	(Ball_Y_pos + Size >= '0' & pixel_row ) THEN
- 		RED <= '1';
-		GREEN <= '0';
-		BLUE <= '0';
-		--TODO update enemy pos
-	ELSIF (enemy_pos)
-		RED <= '0';
-		GREEN <= '1';
-		BLUE <= '0';
- 	ELSE
- 		RED <= '1';
-		GREEN <= '1';
-		BLUE <= '1';
-END IF;
-END process RGB_Display;
-
-
-Move_Ball: process(reset, vert_sync)
-BEGIN
-	IF(reset = '0') then
-		BALL_Y_POS <= conv_std_logic_vector(240,10);
-			-- Move ball once every vertical sync
-
-	ELSIF vert_sync'event and vert_sync = '1' then
-		IF(Ball_Y_POS <= 640) then
-			IF(dir = up) then
-				Ball_Y_pos <= Ball_Y_pos - conv_std_logic_vector(30,10);
-			ELSE
-				Ball_Y_POS <= Ball_Y_POS + conv_std_logic_vector(5,10);
-			END IF;
-		ELSE
-			BALL_Y_POS <= conv_std_logic_vector(640,10);
-		END IF;
-	END IF;
-		
-END process Move_Ball;
-
-UPDATE_MOTION: process (jump)
-BEGIN
-	IF(jump = '0') then
-		dir <= up;
-	ELSE
-		dir <= down;
-	END IF;
-
-END process;
-
+--UPDATE X AND Y VALUES OF THE BALL
 x <= BALL_X_POS;
 y <= BALL_Y_POS;
 
---TODO: Collision collider
+ENEMY_ON_VALUE <= ENEMY_ON;-- UPDATE ENEMY FLAG
+
+----DEBUG FOR DISPLAY ENEMY
+--ENEMY_X(0) <= CONV_STD_LOGIC_VECTOR(230, 10);
+--ENEMY_Y(0) <= CONV_STD_LOGIC_VECTOR(230, 10);
+--ENEMY_X(1) <= CONV_STD_LOGIC_VECTOR(80, 10);
+--ENEMY_Y(1) <= CONV_STD_LOGIC_VECTOR(80, 10);
+--ENEMY_X(2) <= CONV_STD_LOGIC_VECTOR(140, 10);
+--ENEMY_Y(2) <= CONV_STD_LOGIC_VECTOR(140, 10);
+--ENEMY_X(3) <= CONV_STD_LOGIC_VECTOR(320, 10);
+--ENEMY_Y(3) <= CONV_STD_LOGIC_VECTOR(320, 10);
+--ENEMY_X(4) <= CONV_STD_LOGIC_VECTOR(50, 10);
+--ENEMY_Y(4) <= CONV_STD_LOGIC_VECTOR(50, 10);
+
+--INSTANTIATE ENEMIES
+GEN_ENEMY:
+	FOR I IN 0 TO 4 GENERATE
+		ENEMY_INST: ENEMY PORT MAP
+			(RESET 		=> RESET,
+			 X				=> ENEMY_X(I),
+			 Y 			=> ENEMY_Y(I),
+			 VERT_SYNC	=> VERT_SYNC
+			 );
+	END GENERATE;
+			 
+RGB_Display: Process (Ball_X_pos, Ball_Y_pos, pixel_column, pixel_row, Size)
+BEGIN
+	--display ball
+	IF ('0' & Ball_X_pos <= pixel_column + Size) AND
+ 			-- compare positive numbers only
+		(Ball_X_pos + Size >= '0' & pixel_column) AND
+		('0' & Ball_Y_pos <= pixel_row + Size) AND
+		(Ball_Y_pos + Size >= '0' & pixel_row ) THEN
+ 		TEMP_R <= '1';
+		TEMP_G <= '0';
+		TEMP_B <= '0';
+	ELSIF (ENEMY_ON_VALUE) THEN
+		TEMP_R <= '0';
+		TEMP_G <= '1';
+		TEMP_B <= '0';
+ 	ELSE
+  		TEMP_R <= '1';
+		TEMP_G <= '1';
+		TEMP_B <= '1';
+END IF;
+END process RGB_Display;
+
+Move_Ball: process(reset, vert_sync, up, down, slide_l, slide_r)
+variable x_int, y_int : integer;
+BEGIN
+	--RESET TO RESET THE LOCATION
+	IF(reset = '1') then
+		x_int := 140;
+		y_int := 480;
+			
+	-- Move ball once every vertical sync
+	ELSIF vert_sync'event and vert_sync = '1' then
+	
+		--MOVE IN Y DIRECTION
+		IF(UP = '1') THEN
+			IF(y_int - SIZE > 0) THEN
+				y_int := y_int - 2;
+			END IF;
+		ELSIF(DOWN = '1') THEN
+			IF(y_int + SIZE < 480) THEN
+				Y_INT := y_int + 2;
+			END IF;
+		END IF;
+		
+		--MOVE IN X DIRECTION
+		IF(SLIDE_L = '1') THEN
+			IF (X_INT - SIZE > 0) THEN
+				X_INT := X_INT - 2;
+			END IF;
+		ELSIF(SLIDE_R = '1') THEN
+			IF(X_INT  + SIZE < 640) THEN
+				X_INT := X_INT + 2;
+			END IF;
+		END IF;
+	END IF;
+	
+	BALL_Y_POS <= conv_std_logic_vector(y_int, 10);
+	BALL_X_POS <= conv_std_logic_vector(x_int, 10);
+END process Move_Ball;
+
+
+
+
 END behavior;
+
+--
 

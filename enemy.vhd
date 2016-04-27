@@ -8,8 +8,9 @@ use IEEE.std_logic_arith.all;
 
 ENTITY enemy IS
 
-   PORT(reset: IN std_logic;
-		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+   PORT(reset		: IN std_logic;
+		  x, y 		: OUT STD_LOGIC_VECTOR (9 downto 0);
+		  Vert_sync	: IN std_logic
 		  );
  
 END enemy;
@@ -22,7 +23,6 @@ SIGNAL Ball_on, Direction			: std_logic;
 SIGNAL Size 						: std_logic_vector(9 DOWNTO 0);  
 SIGNAL Ball_Y_motion : std_logic_vector(9 DOWNTO 0);
 SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
-SIGNAL dir: move_flag;
 
 
 BEGIN           

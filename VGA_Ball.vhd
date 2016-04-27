@@ -85,7 +85,8 @@ END COMPONENT;
 
 COMPONENT ball
 
-    PORT(reset, jump, slide_l, slide_r: in std_logic;
+    PORT
+		 (reset, up, down, slide_l, slide_r: in std_logic;
 		  pixel_row, pixel_column		: IN std_logic_vector(9 DOWNTO 0);
         Red,Green,Blue 				: OUT std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
@@ -113,7 +114,8 @@ SIGNAL pixel_row_int :STD_LOGIC_VECTOR(9 DOWNTO 0);
 SIGNAL pixel_column_int :STD_LOGIC_VECTOR(9 DOWNTO 0);
 
 --Debounce 
-SIGNAL jump, slide_l, slide_r: STD_LOGIC;
+SIGNAL up, down, slide_l, slide_r: STD_LOGIC;
+SIGNAL N_UP, N_DOWN, N_SLIDE_L, N_SLIDE_R: STD_LOGIC;
 
 SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
@@ -128,6 +130,11 @@ BEGIN
 	VGA_HS <= horiz_sync_int;
 	VGA_VS <= vert_sync_int;
 
+	--INVERT THE PUSH BUTTON
+	N_UP 		<= NOT UP;
+	N_DOWN	<= NOT DOWN;
+	N_SLIDE_L<= NOT SLIDE_L;
+	N_SLIDE_R<= NOT SLIDE_R;
 
 	U1: VGA_SYNC_module PORT MAP
 		(clock_50Mhz		=>	CLOCK_50,
@@ -146,10 +153,11 @@ BEGIN
 		);
 
 	U2: ball PORT MAP
-		(reset			=> reset,
-		 jump				=> jump,
-		 slide_l			=> slide_l,
-		 slide_r			=> slide-r,
+		(reset			=> SW(0),
+		 up				=> N_up,
+		 down				=> N_down,
+		 slide_l			=> N_slide_l,
+		 slide_r			=> N_slide_r,
 		 pixel_row		=> pixel_row_int,
 		 pixel_column	=> pixel_column_int,
 		 Red				=> red_int,
@@ -161,16 +169,21 @@ BEGIN
 	U3: Debounce Port Map
 		(CLK => clock_50,
 		 x => KEY(0),
-		 Dbx => jump);
+		 Dbx => up);
 		 
 	U4: Debounce Port Map
 		(CLK => clock_50,
-		 x => KEY(0),
-		 Dbx => slide_l);
-	
+		 x => KEY(1),
+		 Dbx => down);
+		 
 	U5: Debounce Port Map
 		(CLK => clock_50,
-		 x => KEY(0),
+		 x => KEY(3),
+		 Dbx => slide_l);
+	
+	U6: Debounce Port Map
+		(CLK => clock_50,
+		 x => KEY(2),
 		 Dbx => slide_r);
 		 
 END structural;
