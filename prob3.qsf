@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone IV E"
 set_global_assignment -name DEVICE EP4CE115F29C7
-set_global_assignment -name TOP_LEVEL_ENTITY VGA_Ball
+set_global_assignment -name TOP_LEVEL_ENTITY BALL
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 15.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "11:58:23  MARCH 31, 2016"
 set_global_assignment -name LAST_QUARTUS_VERSION 15.1.0
@@ -577,6 +577,18 @@ set_location_assignment PIN_V22 -to HSMC_TX_D_N[16]
 set_location_assignment PIN_T22 -to HSMC_RX_D_N[16]
 set_location_assignment PIN_V24 -to HSMC_CLKOUT_N2
 set_location_assignment PIN_G24 -to HSMC_CLKOUT_N1
+set_global_assignment -name VHDL_FILE Debounce.vhd
+set_global_assignment -name VHDL_FILE BALL.VHD
+set_global_assignment -name VHDL_FILE video_PLL.vhd
+set_global_assignment -name VHDL_FILE VGA_SYNC.VHD
+set_global_assignment -name VHDL_FILE VGA_Ball.vhd
+set_global_assignment -name CDF_FILE output_files/Chain2.cdf
+set_global_assignment -name CDF_FILE output_files/Chain3.cdf
+set_global_assignment -name CDF_FILE output_files/Chain1.cdf
+set_global_assignment -name VHDL_FILE enemy.vhd
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_ADCDAT
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_ADCLRCK
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to AUD_BCLK
@@ -1102,16 +1114,4 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N[16]
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N[16]
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_CLKOUT_N2
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_CLKOUT_N1
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name VHDL_FILE Debounce.vhd
-set_global_assignment -name VHDL_FILE BALL.VHD
-set_global_assignment -name VHDL_FILE video_PLL.vhd
-set_global_assignment -name VHDL_FILE VGA_SYNC.VHD
-set_global_assignment -name VHDL_FILE VGA_Ball.vhd
-set_global_assignment -name CDF_FILE output_files/Chain2.cdf
-set_global_assignment -name CDF_FILE output_files/Chain3.cdf
-set_global_assignment -name CDF_FILE output_files/Chain1.cdf
-set_global_assignment -name VHDL_FILE enemy.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

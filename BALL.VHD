@@ -56,10 +56,10 @@ BEGIN
 		GREEN <= '0';
 		BLUE <= '0';
 		--TODO update enemy pos
-	ELSIF (enemy_pos)
-		RED <= '0';
-		GREEN <= '1';
-		BLUE <= '0';
+--	ELSIF (enemy_pos) then
+--		RED <= '0';
+--		GREEN <= '1';
+--		BLUE <= '0';
  	ELSE
  		RED <= '1';
 		GREEN <= '1';

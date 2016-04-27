@@ -149,7 +149,7 @@ BEGIN
 		(reset			=> reset,
 		 jump				=> jump,
 		 slide_l			=> slide_l,
-		 slide_r			=> slide-r,
+		 slide_r			=> slide_r,
 		 pixel_row		=> pixel_row_int,
 		 pixel_column	=> pixel_column_int,
 		 Red				=> red_int,
