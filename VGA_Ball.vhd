@@ -130,11 +130,7 @@ SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
 
-<<<<<<< HEAD
-SIGNAL X_CTR, Y_CTR: STD_LOGIC;
-=======
 SIGNAL X_CTR, Y_CTR: std_logic;
->>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 
 BEGIN
 
@@ -178,30 +174,30 @@ BEGIN
 		);
 ------------------------------------------------------- USE PUSH BUTTON ------------------------------------------------
 	--INVERT THE PUSH BUTTON
-	N_UP 		<= NOT UP;
-	N_DOWN	<= NOT DOWN;
-	N_SLIDE_L<= NOT SLIDE_L;
-	N_SLIDE_R<= NOT SLIDE_R;
+	N_UP 		<= NOT KEY(0);
+	N_DOWN	<= NOT KEY(1);
+	N_SLIDE_L<= NOT KEY(3);
+	N_SLIDE_R<= NOT KEY(2);
 --USE KEY		
-	U3: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(0),
-		 Dbx => up);
-		 
-	U4: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(1),
-		 Dbx => down);
-		 
-	U5: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(3),
-		 Dbx => slide_l);
-	
-	U6: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(2),
-		 Dbx => slide_r);
+--	U3: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(0),
+--		 Dbx => up);
+--		 
+--	U4: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(1),
+--		 Dbx => down);
+--		 
+--	U5: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(3),
+--		 Dbx => slide_l);
+--	
+--	U6: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(2),
+--		 Dbx => slide_r);
 
 ------------------------------------------------------------USE SENSOR----------------------------------------------
 --UP_DOWN: SENSOR_CONTROL PORT MAP

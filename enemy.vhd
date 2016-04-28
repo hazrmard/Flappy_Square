@@ -60,11 +60,12 @@ SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 SIGNAL count: integer:=0;
 SIGNAL resetn, load: std_logic;
 SIGNAL random, random1, random2: std_logic_vector (9 downto 0);
-SIGNAL seed: std_logic_vector (8 downto 0):="00000" & s;
+SIGNAL seed: std_logic_vector (9 downto 0);
 
 
 BEGIN
 
+SEED <= "0000000" & s;
 r1: LFSR_GENERIC port map (clock => vsync, resetn=>resetn, load=>load, serial_out=>open, parallel_out=>random, seed=>seed);            
 
 Initialize_Random: process (VSYNC)
@@ -103,9 +104,9 @@ Move_Ball: process(RESET, VSYNC)--@@ Added sensitivity list
 	
 BEGIN
 
-	if reset'event and reset='1' then		--initializing enemy positions and motions
-	rint1 := '0' & conv_std_logic_vector((conv_integer(random1) mod 632), 10) - '0' & conv_std_logic_vector(316, 10);
-	rint2 := '0' & conv_std_logic_vector((conv_integer(random2) mod 472), 10) - '0' & conv_std_logic_vector(236, 10);
+	if RESET = '1' then		--initializing enemy positions and motions
+	rint1 := ('0' & conv_std_logic_vector((conv_integer(random1) mod 632), 10)) - ('0' & conv_std_logic_vector(316, 10));
+	rint2 := ('0' & conv_std_logic_vector((conv_integer(random2) mod 472), 10)) - ('0' & conv_std_logic_vector(236, 10));
 	
 		if rint1 < 0 then		-- left of center
 			Ball_X_pos <= rint1 (9 downto 0);		--removing sign bit
