@@ -123,9 +123,9 @@ SIGNAL RESET : std_logic;
 
 BEGIN
 
-	VGA_R(6 DOWNTO 0) <= "0000000";
-	VGA_G(6 DOWNTO 0) <= "0000000";
-	VGA_B(6 DOWNTO 0) <= "0000000";
+	VGA_R(6 DOWNTO 0) <= "0" & SW(17) & "00000";
+	VGA_G(6 DOWNTO 0) <= "0" & SW(16) & "00000";
+	VGA_B(6 DOWNTO 0) <= "0" & SW(15) & "00000";
 
 	VGA_HS <= horiz_sync_int;
 	VGA_VS <= vert_sync_int;

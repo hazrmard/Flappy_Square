@@ -23,38 +23,38 @@ SW[11] => ~NO_FANOUT~
 SW[12] => ~NO_FANOUT~
 SW[13] => ~NO_FANOUT~
 SW[14] => ~NO_FANOUT~
-SW[15] => ~NO_FANOUT~
-SW[16] => ~NO_FANOUT~
-SW[17] => ~NO_FANOUT~
-VGA_BLANK_N << VGA_SYNC_module:U1.video_on
-VGA_CLK << VGA_SYNC_module:U1.pixel_clock
-VGA_HS << VGA_SYNC_module:U1.horiz_sync_out
-VGA_SYNC_N << comb.DB_MAX_OUTPUT_PORT_TYPE
-VGA_VS << VGA_SYNC_module:U1.vert_sync_out
-VGA_R[0] << <GND>
-VGA_R[1] << <GND>
-VGA_R[2] << <GND>
-VGA_R[3] << <GND>
-VGA_R[4] << <GND>
-VGA_R[5] << <GND>
-VGA_R[6] << <GND>
-VGA_R[7] << VGA_SYNC_module:U1.red_out
-VGA_G[0] << <GND>
-VGA_G[1] << <GND>
-VGA_G[2] << <GND>
-VGA_G[3] << <GND>
-VGA_G[4] << <GND>
-VGA_G[5] << <GND>
-VGA_G[6] << <GND>
-VGA_G[7] << VGA_SYNC_module:U1.green_out
-VGA_B[0] << <GND>
-VGA_B[1] << <GND>
-VGA_B[2] << <GND>
-VGA_B[3] << <GND>
-VGA_B[4] << <GND>
-VGA_B[5] << <GND>
-VGA_B[6] << <GND>
-VGA_B[7] << VGA_SYNC_module:U1.blue_out
+SW[15] => VGA_B[5].DATAIN
+SW[16] => VGA_G[5].DATAIN
+SW[17] => VGA_R[5].DATAIN
+VGA_BLANK_N <= VGA_SYNC_module:U1.video_on
+VGA_CLK <= VGA_SYNC_module:U1.pixel_clock
+VGA_HS <= VGA_SYNC_module:U1.horiz_sync_out
+VGA_SYNC_N <= comb.DB_MAX_OUTPUT_PORT_TYPE
+VGA_VS <= VGA_SYNC_module:U1.vert_sync_out
+VGA_R[0] <= <GND>
+VGA_R[1] <= <GND>
+VGA_R[2] <= <GND>
+VGA_R[3] <= <GND>
+VGA_R[4] <= <GND>
+VGA_R[5] <= SW[17].DB_MAX_OUTPUT_PORT_TYPE
+VGA_R[6] <= <GND>
+VGA_R[7] <= VGA_SYNC_module:U1.red_out
+VGA_G[0] <= <GND>
+VGA_G[1] <= <GND>
+VGA_G[2] <= <GND>
+VGA_G[3] <= <GND>
+VGA_G[4] <= <GND>
+VGA_G[5] <= SW[16].DB_MAX_OUTPUT_PORT_TYPE
+VGA_G[6] <= <GND>
+VGA_G[7] <= VGA_SYNC_module:U1.green_out
+VGA_B[0] <= <GND>
+VGA_B[1] <= <GND>
+VGA_B[2] <= <GND>
+VGA_B[3] <= <GND>
+VGA_B[4] <= <GND>
+VGA_B[5] <= SW[15].DB_MAX_OUTPUT_PORT_TYPE
+VGA_B[6] <= <GND>
+VGA_B[7] <= VGA_SYNC_module:U1.blue_out
 
 
 |VGA_Ball|VGA_SYNC_module:U1
@@ -167,7 +167,6 @@ inclk[1] => pll1.CLK1
 
 
 |VGA_Ball|ball:U2
-reset => enemy:GEN_ENEMY:0:ENEMY_INST.reset
 reset => \Move_Ball:y_int[1].ACLR
 reset => \Move_Ball:y_int[2].ACLR
 reset => \Move_Ball:y_int[3].ACLR
@@ -230,10 +229,6 @@ reset => \Move_Ball:x_int[28].ACLR
 reset => \Move_Ball:x_int[29].ACLR
 reset => \Move_Ball:x_int[30].ACLR
 reset => \Move_Ball:x_int[31].ACLR
-reset => enemy:GEN_ENEMY:1:ENEMY_INST.reset
-reset => enemy:GEN_ENEMY:2:ENEMY_INST.reset
-reset => enemy:GEN_ENEMY:3:ENEMY_INST.reset
-reset => enemy:GEN_ENEMY:4:ENEMY_INST.reset
 up => y_int.OUTPUTSELECT
 up => y_int.OUTPUTSELECT
 up => y_int.OUTPUTSELECT
@@ -499,7 +494,7 @@ pixel_column[9] => LessThan13.IN11
 pixel_column[9] => LessThan17.IN11
 pixel_column[9] => LessThan21.IN11
 Red <= TEMP_R.DB_MAX_OUTPUT_PORT_TYPE
-Green <= RGB_Display.DB_MAX_OUTPUT_PORT_TYPE
+Green <= BALL_ON_VALUE.DB_MAX_OUTPUT_PORT_TYPE
 Blue <= TEMP_B.DB_MAX_OUTPUT_PORT_TYPE
 x[0] <= <GND>
 x[1] <= \Move_Ball:x_int[1].DB_MAX_OUTPUT_PORT_TYPE
@@ -521,7 +516,6 @@ y[6] <= \Move_Ball:y_int[6].DB_MAX_OUTPUT_PORT_TYPE
 y[7] <= \Move_Ball:y_int[7].DB_MAX_OUTPUT_PORT_TYPE
 y[8] <= \Move_Ball:y_int[8].DB_MAX_OUTPUT_PORT_TYPE
 y[9] <= \Move_Ball:y_int[9].DB_MAX_OUTPUT_PORT_TYPE
-Vert_sync => enemy:GEN_ENEMY:0:ENEMY_INST.Vert_sync
 Vert_sync => \Move_Ball:y_int[1].CLK
 Vert_sync => \Move_Ball:y_int[2].CLK
 Vert_sync => \Move_Ball:y_int[3].CLK
@@ -584,135 +578,6 @@ Vert_sync => \Move_Ball:x_int[28].CLK
 Vert_sync => \Move_Ball:x_int[29].CLK
 Vert_sync => \Move_Ball:x_int[30].CLK
 Vert_sync => \Move_Ball:x_int[31].CLK
-Vert_sync => enemy:GEN_ENEMY:1:ENEMY_INST.Vert_sync
-Vert_sync => enemy:GEN_ENEMY:2:ENEMY_INST.Vert_sync
-Vert_sync => enemy:GEN_ENEMY:3:ENEMY_INST.Vert_sync
-Vert_sync => enemy:GEN_ENEMY:4:ENEMY_INST.Vert_sync
-
-
-|VGA_Ball|ball:U2|enemy:\GEN_ENEMY:0:ENEMY_INST
-reset => ~NO_FANOUT~
-x[0] <= x[0].DB_MAX_OUTPUT_PORT_TYPE
-x[1] <= x[1].DB_MAX_OUTPUT_PORT_TYPE
-x[2] <= x[2].DB_MAX_OUTPUT_PORT_TYPE
-x[3] <= x[3].DB_MAX_OUTPUT_PORT_TYPE
-x[4] <= x[4].DB_MAX_OUTPUT_PORT_TYPE
-x[5] <= x[5].DB_MAX_OUTPUT_PORT_TYPE
-x[6] <= x[6].DB_MAX_OUTPUT_PORT_TYPE
-x[7] <= x[7].DB_MAX_OUTPUT_PORT_TYPE
-x[8] <= x[8].DB_MAX_OUTPUT_PORT_TYPE
-x[9] <= x[9].DB_MAX_OUTPUT_PORT_TYPE
-y[0] <= comb.DB_MAX_OUTPUT_PORT_TYPE
-y[1] <= y[1].DB_MAX_OUTPUT_PORT_TYPE
-y[2] <= y[2].DB_MAX_OUTPUT_PORT_TYPE
-y[3] <= y[3].DB_MAX_OUTPUT_PORT_TYPE
-y[4] <= y[4].DB_MAX_OUTPUT_PORT_TYPE
-y[5] <= y[5].DB_MAX_OUTPUT_PORT_TYPE
-y[6] <= y[6].DB_MAX_OUTPUT_PORT_TYPE
-y[7] <= y[7].DB_MAX_OUTPUT_PORT_TYPE
-y[8] <= y[8].DB_MAX_OUTPUT_PORT_TYPE
-y[9] <= y[9].DB_MAX_OUTPUT_PORT_TYPE
-Vert_sync => ~NO_FANOUT~
-
-
-|VGA_Ball|ball:U2|enemy:\GEN_ENEMY:1:ENEMY_INST
-reset => ~NO_FANOUT~
-x[0] <= x[0].DB_MAX_OUTPUT_PORT_TYPE
-x[1] <= x[1].DB_MAX_OUTPUT_PORT_TYPE
-x[2] <= x[2].DB_MAX_OUTPUT_PORT_TYPE
-x[3] <= x[3].DB_MAX_OUTPUT_PORT_TYPE
-x[4] <= x[4].DB_MAX_OUTPUT_PORT_TYPE
-x[5] <= x[5].DB_MAX_OUTPUT_PORT_TYPE
-x[6] <= x[6].DB_MAX_OUTPUT_PORT_TYPE
-x[7] <= x[7].DB_MAX_OUTPUT_PORT_TYPE
-x[8] <= x[8].DB_MAX_OUTPUT_PORT_TYPE
-x[9] <= x[9].DB_MAX_OUTPUT_PORT_TYPE
-y[0] <= comb.DB_MAX_OUTPUT_PORT_TYPE
-y[1] <= y[1].DB_MAX_OUTPUT_PORT_TYPE
-y[2] <= y[2].DB_MAX_OUTPUT_PORT_TYPE
-y[3] <= y[3].DB_MAX_OUTPUT_PORT_TYPE
-y[4] <= y[4].DB_MAX_OUTPUT_PORT_TYPE
-y[5] <= y[5].DB_MAX_OUTPUT_PORT_TYPE
-y[6] <= y[6].DB_MAX_OUTPUT_PORT_TYPE
-y[7] <= y[7].DB_MAX_OUTPUT_PORT_TYPE
-y[8] <= y[8].DB_MAX_OUTPUT_PORT_TYPE
-y[9] <= y[9].DB_MAX_OUTPUT_PORT_TYPE
-Vert_sync => ~NO_FANOUT~
-
-
-|VGA_Ball|ball:U2|enemy:\GEN_ENEMY:2:ENEMY_INST
-reset => ~NO_FANOUT~
-x[0] <= x[0].DB_MAX_OUTPUT_PORT_TYPE
-x[1] <= x[1].DB_MAX_OUTPUT_PORT_TYPE
-x[2] <= x[2].DB_MAX_OUTPUT_PORT_TYPE
-x[3] <= x[3].DB_MAX_OUTPUT_PORT_TYPE
-x[4] <= x[4].DB_MAX_OUTPUT_PORT_TYPE
-x[5] <= x[5].DB_MAX_OUTPUT_PORT_TYPE
-x[6] <= x[6].DB_MAX_OUTPUT_PORT_TYPE
-x[7] <= x[7].DB_MAX_OUTPUT_PORT_TYPE
-x[8] <= x[8].DB_MAX_OUTPUT_PORT_TYPE
-x[9] <= x[9].DB_MAX_OUTPUT_PORT_TYPE
-y[0] <= comb.DB_MAX_OUTPUT_PORT_TYPE
-y[1] <= y[1].DB_MAX_OUTPUT_PORT_TYPE
-y[2] <= y[2].DB_MAX_OUTPUT_PORT_TYPE
-y[3] <= y[3].DB_MAX_OUTPUT_PORT_TYPE
-y[4] <= y[4].DB_MAX_OUTPUT_PORT_TYPE
-y[5] <= y[5].DB_MAX_OUTPUT_PORT_TYPE
-y[6] <= y[6].DB_MAX_OUTPUT_PORT_TYPE
-y[7] <= y[7].DB_MAX_OUTPUT_PORT_TYPE
-y[8] <= y[8].DB_MAX_OUTPUT_PORT_TYPE
-y[9] <= y[9].DB_MAX_OUTPUT_PORT_TYPE
-Vert_sync => ~NO_FANOUT~
-
-
-|VGA_Ball|ball:U2|enemy:\GEN_ENEMY:3:ENEMY_INST
-reset => ~NO_FANOUT~
-x[0] <= x[0].DB_MAX_OUTPUT_PORT_TYPE
-x[1] <= x[1].DB_MAX_OUTPUT_PORT_TYPE
-x[2] <= x[2].DB_MAX_OUTPUT_PORT_TYPE
-x[3] <= x[3].DB_MAX_OUTPUT_PORT_TYPE
-x[4] <= x[4].DB_MAX_OUTPUT_PORT_TYPE
-x[5] <= x[5].DB_MAX_OUTPUT_PORT_TYPE
-x[6] <= x[6].DB_MAX_OUTPUT_PORT_TYPE
-x[7] <= x[7].DB_MAX_OUTPUT_PORT_TYPE
-x[8] <= x[8].DB_MAX_OUTPUT_PORT_TYPE
-x[9] <= x[9].DB_MAX_OUTPUT_PORT_TYPE
-y[0] <= comb.DB_MAX_OUTPUT_PORT_TYPE
-y[1] <= y[1].DB_MAX_OUTPUT_PORT_TYPE
-y[2] <= y[2].DB_MAX_OUTPUT_PORT_TYPE
-y[3] <= y[3].DB_MAX_OUTPUT_PORT_TYPE
-y[4] <= y[4].DB_MAX_OUTPUT_PORT_TYPE
-y[5] <= y[5].DB_MAX_OUTPUT_PORT_TYPE
-y[6] <= y[6].DB_MAX_OUTPUT_PORT_TYPE
-y[7] <= y[7].DB_MAX_OUTPUT_PORT_TYPE
-y[8] <= y[8].DB_MAX_OUTPUT_PORT_TYPE
-y[9] <= y[9].DB_MAX_OUTPUT_PORT_TYPE
-Vert_sync => ~NO_FANOUT~
-
-
-|VGA_Ball|ball:U2|enemy:\GEN_ENEMY:4:ENEMY_INST
-reset => ~NO_FANOUT~
-x[0] <= x[0].DB_MAX_OUTPUT_PORT_TYPE
-x[1] <= x[1].DB_MAX_OUTPUT_PORT_TYPE
-x[2] <= x[2].DB_MAX_OUTPUT_PORT_TYPE
-x[3] <= x[3].DB_MAX_OUTPUT_PORT_TYPE
-x[4] <= x[4].DB_MAX_OUTPUT_PORT_TYPE
-x[5] <= x[5].DB_MAX_OUTPUT_PORT_TYPE
-x[6] <= x[6].DB_MAX_OUTPUT_PORT_TYPE
-x[7] <= x[7].DB_MAX_OUTPUT_PORT_TYPE
-x[8] <= x[8].DB_MAX_OUTPUT_PORT_TYPE
-x[9] <= x[9].DB_MAX_OUTPUT_PORT_TYPE
-y[0] <= comb.DB_MAX_OUTPUT_PORT_TYPE
-y[1] <= y[1].DB_MAX_OUTPUT_PORT_TYPE
-y[2] <= y[2].DB_MAX_OUTPUT_PORT_TYPE
-y[3] <= y[3].DB_MAX_OUTPUT_PORT_TYPE
-y[4] <= y[4].DB_MAX_OUTPUT_PORT_TYPE
-y[5] <= y[5].DB_MAX_OUTPUT_PORT_TYPE
-y[6] <= y[6].DB_MAX_OUTPUT_PORT_TYPE
-y[7] <= y[7].DB_MAX_OUTPUT_PORT_TYPE
-y[8] <= y[8].DB_MAX_OUTPUT_PORT_TYPE
-y[9] <= y[9].DB_MAX_OUTPUT_PORT_TYPE
-Vert_sync => ~NO_FANOUT~
 
 
 |VGA_Ball|Debounce:U3
