@@ -31,8 +31,9 @@ use ieee.std_logic_unsigned.all;
 
 ENTITY enemy IS
 
-   PORT(reset, vsync: IN std_logic;
-		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+   PORT(reset, vsync: IN std_logic;			-- reset to initialize enemy positions, vsync acts as clock
+		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0); -- enemy's x and y position
+		  s: in std_logic_vector (2 downto 0)	-- seed for each enemy's random num generator
 		  );
  
 END enemy;
@@ -52,15 +53,14 @@ component LFSR_GENERIC is			-- pseudo random number generator
 
 	end component LFSR_GENERIC;
 
-   
-SIGNAL Ball_on		: std_logic;  
+  
 SIGNAL Ball_Y_motion, BAll_X_motion : std_logic_vector(9 DOWNTO 0);
 SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 
 SIGNAL count: integer:=0;
 SIGNAL resetn, load: std_logic;
 SIGNAL random, random1, random2: std_logic_vector (9 downto 0);
-SIGNAL seed: std_logic_vector (8 downto 0):="000000000";
+SIGNAL seed: std_logic_vector (8 downto 0):="00000" & s;
 
 
 BEGIN
