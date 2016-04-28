@@ -56,9 +56,9 @@ BEGIN
 			END IF;
 		END IF;
 	ELSE
-		TRIG = '0';
-		OUT1 = '0';
-		OUT2 = '0';
+		TRIG <= '0';
+		OUT1 <= '0';
+		OUT2 <= '0';
 	END IF;
 END PROCESS;
 END CONTROL;
