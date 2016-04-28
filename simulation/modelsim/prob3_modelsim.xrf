@@ -1,13 +1,15 @@
 vendor_name = ModelSim
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/Debounce.vhd
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/BALL.VHD
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/video_PLL.vhd
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/VGA_SYNC.VHD
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/VGA_Ball.vhd
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/Debounce.vhd
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/BALL.VHD
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/video_PLL.vhd
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/VGA_SYNC.VHD
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/VGA_Ball.vhd
 source_file = 1, output_files/Chain2.cdf
 source_file = 1, output_files/Chain3.cdf
 source_file = 1, output_files/Chain1.cdf
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/sensor_control.vhd
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/sensor_control.vhd
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/enemy.vhd
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/lfsr_generic.vhd
 source_file = 1, c:/altera_lite/15.1/quartus/libraries/vhdl/ieee/prmtvs_b.vhd
 source_file = 1, c:/altera_lite/15.1/quartus/libraries/vhdl/ieee/prmtvs_p.vhd
 source_file = 1, c:/altera_lite/15.1/quartus/libraries/vhdl/ieee/timing_b.vhd
@@ -18,7 +20,7 @@ source_file = 1, c:/altera_lite/15.1/quartus/libraries/megafunctions/stratix_pll
 source_file = 1, c:/altera_lite/15.1/quartus/libraries/megafunctions/stratixii_pll.inc
 source_file = 1, c:/altera_lite/15.1/quartus/libraries/megafunctions/cycloneii_pll.inc
 source_file = 1, c:/altera_lite/15.1/quartus/libraries/megafunctions/cbx.lst
-source_file = 1, D:/OneDrive/Documents/Undergraduate/Spring 2016/EECE 4377/Lab 3/project/flappy square/db/video_pll_altpll.v
+source_file = 1, C:/Users/Ibrahim/Developer/Flappy_Square/db/video_pll_altpll.v
 design_name = VGA_Ball
 instance = comp, \VGA_BLANK_N~output\, VGA_BLANK_N~output, VGA_Ball, 1
 instance = comp, \VGA_CLK~output\, VGA_CLK~output, VGA_Ball, 1
@@ -56,6 +58,25 @@ instance = comp, \GPIO[3]~output\, GPIO[3]~output, VGA_Ball, 1
 instance = comp, \CLOCK_50~input\, CLOCK_50~input, VGA_Ball, 1
 instance = comp, \U1|video_PLL_inst|altpll_component|auto_generated|pll1\, U1|video_PLL_inst|altpll_component|auto_generated|pll1, VGA_Ball, 1
 instance = comp, \U1|video_PLL_inst|altpll_component|auto_generated|wire_pll1_clk[0]~clkctrl\, U1|video_PLL_inst|altpll_component|auto_generated|wire_pll1_clk[0]~clkctrl, VGA_Ball, 1
+<<<<<<< HEAD
+=======
+instance = comp, \U1|Add0~0\, U1|Add0~0, VGA_Ball, 1
+instance = comp, \U1|Add0~16\, U1|Add0~16, VGA_Ball, 1
+instance = comp, \U1|Add0~18\, U1|Add0~18, VGA_Ball, 1
+instance = comp, \U1|h_count~1\, U1|h_count~1, VGA_Ball, 1
+instance = comp, \U1|h_count[9]\, U1|h_count[9], VGA_Ball, 1
+instance = comp, \U1|Equal0~0\, U1|Equal0~0, VGA_Ball, 1
+instance = comp, \U1|Equal0~2\, U1|Equal0~2, VGA_Ball, 1
+instance = comp, \U1|Equal0~3\, U1|Equal0~3, VGA_Ball, 1
+instance = comp, \U1|h_count~3\, U1|h_count~3, VGA_Ball, 1
+instance = comp, \U1|h_count[0]\, U1|h_count[0], VGA_Ball, 1
+instance = comp, \U1|Add0~2\, U1|Add0~2, VGA_Ball, 1
+instance = comp, \U1|h_count[1]\, U1|h_count[1], VGA_Ball, 1
+instance = comp, \U1|Add0~4\, U1|Add0~4, VGA_Ball, 1
+instance = comp, \U1|h_count[2]\, U1|h_count[2], VGA_Ball, 1
+instance = comp, \U1|Add0~6\, U1|Add0~6, VGA_Ball, 1
+instance = comp, \U1|h_count[3]\, U1|h_count[3], VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|Add0~8\, U1|Add0~8, VGA_Ball, 1
 instance = comp, \U1|Add0~10\, U1|Add0~10, VGA_Ball, 1
 instance = comp, \U1|h_count~2\, U1|h_count~2, VGA_Ball, 1
@@ -64,6 +85,7 @@ instance = comp, \U1|Add0~12\, U1|Add0~12, VGA_Ball, 1
 instance = comp, \U1|h_count[6]\, U1|h_count[6], VGA_Ball, 1
 instance = comp, \U1|Add0~14\, U1|Add0~14, VGA_Ball, 1
 instance = comp, \U1|h_count[7]\, U1|h_count[7], VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U1|Equal0~2\, U1|Equal0~2, VGA_Ball, 1
 instance = comp, \U1|Add0~16\, U1|Add0~16, VGA_Ball, 1
 instance = comp, \U1|h_count~0\, U1|h_count~0, VGA_Ball, 1
@@ -83,10 +105,23 @@ instance = comp, \U1|h_count[2]\, U1|h_count[2], VGA_Ball, 1
 instance = comp, \U1|Add0~6\, U1|Add0~6, VGA_Ball, 1
 instance = comp, \U1|h_count[3]\, U1|h_count[3], VGA_Ball, 1
 instance = comp, \U1|h_count[4]\, U1|h_count[4], VGA_Ball, 1
+=======
+instance = comp, \U1|h_count~0\, U1|h_count~0, VGA_Ball, 1
+instance = comp, \U1|h_count[8]\, U1|h_count[8], VGA_Ball, 1
+instance = comp, \U1|LessThan5~0\, U1|LessThan5~0, VGA_Ball, 1
+instance = comp, \U1|video_on_h\, U1|video_on_h, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|Equal1~0\, U1|Equal1~0, VGA_Ball, 1
 instance = comp, \U1|Equal0~1\, U1|Equal0~1, VGA_Ball, 1
+instance = comp, \U1|process_0~0\, U1|process_0~0, VGA_Ball, 1
+instance = comp, \U1|process_0~1\, U1|process_0~1, VGA_Ball, 1
+instance = comp, \U1|process_0~2\, U1|process_0~2, VGA_Ball, 1
 instance = comp, \U1|Add1~0\, U1|Add1~0, VGA_Ball, 1
 instance = comp, \U1|v_count~8\, U1|v_count~8, VGA_Ball, 1
+<<<<<<< HEAD
+=======
+instance = comp, \U1|v_count[9]~1\, U1|v_count[9]~1, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|v_count[0]\, U1|v_count[0], VGA_Ball, 1
 instance = comp, \U1|Add1~2\, U1|Add1~2, VGA_Ball, 1
 instance = comp, \U1|v_count~9\, U1|v_count~9, VGA_Ball, 1
@@ -98,8 +133,11 @@ instance = comp, \U1|v_count[2]\, U1|v_count[2], VGA_Ball, 1
 instance = comp, \U1|Add1~6\, U1|Add1~6, VGA_Ball, 1
 instance = comp, \U1|v_count[3]~11\, U1|v_count[3]~11, VGA_Ball, 1
 instance = comp, \U1|v_count[3]\, U1|v_count[3], VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U1|LessThan1~0\, U1|LessThan1~0, VGA_Ball, 1
 instance = comp, \U1|process_0~1\, U1|process_0~1, VGA_Ball, 1
+=======
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|Add1~8\, U1|Add1~8, VGA_Ball, 1
 instance = comp, \U1|v_count[4]~7\, U1|v_count[4]~7, VGA_Ball, 1
 instance = comp, \U1|v_count[4]\, U1|v_count[4], VGA_Ball, 1
@@ -110,9 +148,12 @@ instance = comp, \U1|v_count[6]\, U1|v_count[6], VGA_Ball, 1
 instance = comp, \U1|Add1~14\, U1|Add1~14, VGA_Ball, 1
 instance = comp, \U1|v_count[7]~5\, U1|v_count[7]~5, VGA_Ball, 1
 instance = comp, \U1|v_count[7]\, U1|v_count[7], VGA_Ball, 1
+instance = comp, \U1|process_0~4\, U1|process_0~4, VGA_Ball, 1
+instance = comp, \U1|process_0~3\, U1|process_0~3, VGA_Ball, 1
 instance = comp, \U1|Add1~16\, U1|Add1~16, VGA_Ball, 1
 instance = comp, \U1|v_count[8]~6\, U1|v_count[8]~6, VGA_Ball, 1
 instance = comp, \U1|v_count[8]\, U1|v_count[8], VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U1|Add1~18\, U1|Add1~18, VGA_Ball, 1
 instance = comp, \U1|v_count[9]~2\, U1|v_count[9]~2, VGA_Ball, 1
 instance = comp, \U1|v_count[9]\, U1|v_count[9], VGA_Ball, 1
@@ -123,6 +164,13 @@ instance = comp, \U1|process_0~3\, U1|process_0~3, VGA_Ball, 1
 instance = comp, \U1|v_count[8]~1\, U1|v_count[8]~1, VGA_Ball, 1
 instance = comp, \U1|v_count[5]~3\, U1|v_count[5]~3, VGA_Ball, 1
 instance = comp, \U1|v_count[5]\, U1|v_count[5], VGA_Ball, 1
+=======
+instance = comp, \U1|process_0~5\, U1|process_0~5, VGA_Ball, 1
+instance = comp, \U1|v_count[4]~0\, U1|v_count[4]~0, VGA_Ball, 1
+instance = comp, \U1|Add1~18\, U1|Add1~18, VGA_Ball, 1
+instance = comp, \U1|v_count[9]~2\, U1|v_count[9]~2, VGA_Ball, 1
+instance = comp, \U1|v_count[9]\, U1|v_count[9], VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|LessThan6~0\, U1|LessThan6~0, VGA_Ball, 1
 instance = comp, \U1|LessThan6~1\, U1|LessThan6~1, VGA_Ball, 1
 instance = comp, \U1|LessThan6~2\, U1|LessThan6~2, VGA_Ball, 1
@@ -131,18 +179,24 @@ instance = comp, \U1|LessThan5~0\, U1|LessThan5~0, VGA_Ball, 1
 instance = comp, \U1|video_on_h\, U1|video_on_h, VGA_Ball, 1
 instance = comp, \U1|video_on\, U1|video_on, VGA_Ball, 1
 instance = comp, \U1|process_0~6\, U1|process_0~6, VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U1|process_0~5\, U1|process_0~5, VGA_Ball, 1
 instance = comp, \U1|process_0~4\, U1|process_0~4, VGA_Ball, 1
+=======
+instance = comp, \U1|process_0~8\, U1|process_0~8, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|process_0~7\, U1|process_0~7, VGA_Ball, 1
+instance = comp, \U1|process_0~9\, U1|process_0~9, VGA_Ball, 1
 instance = comp, \U1|horiz_sync\, U1|horiz_sync, VGA_Ball, 1
 instance = comp, \U1|horiz_sync_out~feeder\, U1|horiz_sync_out~feeder, VGA_Ball, 1
 instance = comp, \U1|horiz_sync_out\, U1|horiz_sync_out, VGA_Ball, 1
-instance = comp, \U1|process_0~8\, U1|process_0~8, VGA_Ball, 1
-instance = comp, \U1|process_0~9\, U1|process_0~9, VGA_Ball, 1
+instance = comp, \U1|process_0~10\, U1|process_0~10, VGA_Ball, 1
+instance = comp, \U1|process_0~11\, U1|process_0~11, VGA_Ball, 1
 instance = comp, \U1|vert_sync\, U1|vert_sync, VGA_Ball, 1
 instance = comp, \U1|vert_sync_out~feeder\, U1|vert_sync_out~feeder, VGA_Ball, 1
 instance = comp, \U1|vert_sync_out\, U1|vert_sync_out, VGA_Ball, 1
 instance = comp, \SW[17]~input\, SW[17]~input, VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U1|pixel_column[6]\, U1|pixel_column[6], VGA_Ball, 1
 instance = comp, \U1|pixel_column[8]\, U1|pixel_column[8], VGA_Ball, 1
 instance = comp, \U1|pixel_column[5]\, U1|pixel_column[5], VGA_Ball, 1
@@ -171,15 +225,54 @@ instance = comp, \U2|Add0~8\, U2|Add0~8, VGA_Ball, 1
 instance = comp, \U2|Add0~10\, U2|Add0~10, VGA_Ball, 1
 instance = comp, \U2|Add0~12\, U2|Add0~12, VGA_Ball, 1
 instance = comp, \U1|pixel_row[7]\, U1|pixel_row[7], VGA_Ball, 1
+=======
+instance = comp, \U1|pixel_row[6]\, U1|pixel_row[6], VGA_Ball, 1
+instance = comp, \U1|pixel_row[5]\, U1|pixel_row[5], VGA_Ball, 1
+instance = comp, \U1|pixel_row[4]\, U1|pixel_row[4], VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|pixel_row[3]\, U1|pixel_row[3], VGA_Ball, 1
 instance = comp, \U2|Add2~0\, U2|Add2~0, VGA_Ball, 1
 instance = comp, \U2|Add2~2\, U2|Add2~2, VGA_Ball, 1
 instance = comp, \U2|Add2~4\, U2|Add2~4, VGA_Ball, 1
 instance = comp, \U2|Add2~6\, U2|Add2~6, VGA_Ball, 1
+instance = comp, \U1|pixel_column[9]\, U1|pixel_column[9], VGA_Ball, 1
+instance = comp, \U1|pixel_row[7]\, U1|pixel_row[7], VGA_Ball, 1
 instance = comp, \U2|Add2~8\, U2|Add2~8, VGA_Ball, 1
+instance = comp, \U1|pixel_row[8]\, U1|pixel_row[8], VGA_Ball, 1
 instance = comp, \U2|Add2~10\, U2|Add2~10, VGA_Ball, 1
 instance = comp, \U2|Add2~12\, U2|Add2~12, VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U2|LessThan18~0\, U2|LessThan18~0, VGA_Ball, 1
+=======
+instance = comp, \U2|ENEMY_ON~6\, U2|ENEMY_ON~6, VGA_Ball, 1
+instance = comp, \U1|pixel_column[6]\, U1|pixel_column[6], VGA_Ball, 1
+instance = comp, \U1|pixel_column[8]\, U1|pixel_column[8], VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~0\, U2|ENEMY_ON~0, VGA_Ball, 1
+instance = comp, \U1|pixel_column[5]\, U1|pixel_column[5], VGA_Ball, 1
+instance = comp, \U1|pixel_column[4]\, U1|pixel_column[4], VGA_Ball, 1
+instance = comp, \U1|pixel_column[2]\, U1|pixel_column[2], VGA_Ball, 1
+instance = comp, \U1|pixel_column[0]\, U1|pixel_column[0], VGA_Ball, 1
+instance = comp, \U1|pixel_column[3]\, U1|pixel_column[3], VGA_Ball, 1
+instance = comp, \U1|pixel_column[1]\, U1|pixel_column[1], VGA_Ball, 1
+instance = comp, \U2|LessThan5~0\, U2|LessThan5~0, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~1\, U2|ENEMY_ON~1, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~2\, U2|ENEMY_ON~2, VGA_Ball, 1
+instance = comp, \U2|LessThan18~0\, U2|LessThan18~0, VGA_Ball, 1
+instance = comp, \U1|pixel_column[7]\, U1|pixel_column[7], VGA_Ball, 1
+instance = comp, \U1|pixel_row[2]\, U1|pixel_row[2], VGA_Ball, 1
+instance = comp, \U1|pixel_row[1]\, U1|pixel_row[1], VGA_Ball, 1
+instance = comp, \U1|pixel_row[0]~feeder\, U1|pixel_row[0]~feeder, VGA_Ball, 1
+instance = comp, \U1|pixel_row[0]\, U1|pixel_row[0], VGA_Ball, 1
+instance = comp, \U2|LessThan7~0\, U2|LessThan7~0, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~4\, U2|ENEMY_ON~4, VGA_Ball, 1
+instance = comp, \U2|Add0~0\, U2|Add0~0, VGA_Ball, 1
+instance = comp, \U2|Add0~2\, U2|Add0~2, VGA_Ball, 1
+instance = comp, \U2|Add0~4\, U2|Add0~4, VGA_Ball, 1
+instance = comp, \U2|Add0~6\, U2|Add0~6, VGA_Ball, 1
+instance = comp, \U2|Add0~8\, U2|Add0~8, VGA_Ball, 1
+instance = comp, \U2|Add0~10\, U2|Add0~10, VGA_Ball, 1
+instance = comp, \U2|Add0~12\, U2|Add0~12, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U2|ENEMY_ON~3\, U2|ENEMY_ON~3, VGA_Ball, 1
 instance = comp, \U2|ENEMY_ON~4\, U2|ENEMY_ON~4, VGA_Ball, 1
 instance = comp, \U1|pixel_row[2]\, U1|pixel_row[2], VGA_Ball, 1
@@ -193,6 +286,7 @@ instance = comp, \U2|LessThan14~0\, U2|LessThan14~0, VGA_Ball, 1
 instance = comp, \U2|Add0~14\, U2|Add0~14, VGA_Ball, 1
 instance = comp, \U2|LessThan12~0\, U2|LessThan12~0, VGA_Ball, 1
 instance = comp, \U2|ENEMY_ON~5\, U2|ENEMY_ON~5, VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U2|ENEMY_ON~6\, U2|ENEMY_ON~6, VGA_Ball, 1
 instance = comp, \CLOCK_50~inputclkctrl\, CLOCK_50~inputclkctrl, VGA_Ball, 1
 instance = comp, \KEY[0]~input\, KEY[0]~input, VGA_Ball, 1
@@ -685,15 +779,89 @@ instance = comp, \U2|TEMP_R~1\, U2|TEMP_R~1, VGA_Ball, 1
 instance = comp, \U2|TEMP_R~1clkctrl\, U2|TEMP_R~1clkctrl, VGA_Ball, 1
 instance = comp, \U2|TEMP_R\, U2|TEMP_R, VGA_Ball, 1
 instance = comp, \U1|red_out~0\, U1|red_out~0, VGA_Ball, 1
+=======
+instance = comp, \U2|ENEMY_ON~7\, U2|ENEMY_ON~7, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~31\, U2|ENEMY_ON~31, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~30\, U2|ENEMY_ON~30, VGA_Ball, 1
+instance = comp, \U2|LessThan18~1\, U2|LessThan18~1, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~32\, U2|ENEMY_ON~32, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~25\, U2|ENEMY_ON~25, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~26\, U2|ENEMY_ON~26, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~8\, U2|ENEMY_ON~8, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~27\, U2|ENEMY_ON~27, VGA_Ball, 1
+instance = comp, \U2|LessThan8~0\, U2|LessThan8~0, VGA_Ball, 1
+instance = comp, \U2|LessThan8~1\, U2|LessThan8~1, VGA_Ball, 1
+instance = comp, \U2|LessThan8~2\, U2|LessThan8~2, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~28\, U2|ENEMY_ON~28, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~29\, U2|ENEMY_ON~29, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~33\, U2|ENEMY_ON~33, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~22\, U2|ENEMY_ON~22, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~23\, U2|ENEMY_ON~23, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~24\, U2|ENEMY_ON~24, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~14\, U2|ENEMY_ON~14, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~13\, U2|ENEMY_ON~13, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~10\, U2|ENEMY_ON~10, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~11\, U2|ENEMY_ON~11, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~12\, U2|ENEMY_ON~12, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~15\, U2|ENEMY_ON~15, VGA_Ball, 1
+instance = comp, \U2|LessThan16~0\, U2|LessThan16~0, VGA_Ball, 1
+instance = comp, \U2|LessThan16~1\, U2|LessThan16~1, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~16\, U2|ENEMY_ON~16, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~19\, U2|ENEMY_ON~19, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~17\, U2|ENEMY_ON~17, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~18\, U2|ENEMY_ON~18, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~20\, U2|ENEMY_ON~20, VGA_Ball, 1
+instance = comp, \U2|LessThan16~2\, U2|LessThan16~2, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~21\, U2|ENEMY_ON~21, VGA_Ball, 1
+instance = comp, \U2|LessThan2~0\, U2|LessThan2~0, VGA_Ball, 1
+instance = comp, \U2|LessThan2~1\, U2|LessThan2~1, VGA_Ball, 1
+instance = comp, \U2|LessThan0~0\, U2|LessThan0~0, VGA_Ball, 1
+instance = comp, \U2|LessThan0~1\, U2|LessThan0~1, VGA_Ball, 1
+instance = comp, \U2|LessThan0~2\, U2|LessThan0~2, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~9\, U2|ENEMY_ON~9, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON_VALUE~0\, U2|ENEMY_ON_VALUE~0, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~39\, U2|ENEMY_ON~39, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~34\, U2|ENEMY_ON~34, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~35\, U2|ENEMY_ON~35, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~36\, U2|ENEMY_ON~36, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~37\, U2|ENEMY_ON~37, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~38\, U2|ENEMY_ON~38, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON~40\, U2|ENEMY_ON~40, VGA_Ball, 1
+instance = comp, \U2|ENEMY_ON_VALUE\, U2|ENEMY_ON_VALUE, VGA_Ball, 1
+instance = comp, \U2|LessThan22~0\, U2|LessThan22~0, VGA_Ball, 1
+instance = comp, \SW[0]~input\, SW[0]~input, VGA_Ball, 1
+instance = comp, \U2|LessThan23~0\, U2|LessThan23~0, VGA_Ball, 1
+instance = comp, \U2|LessThan23~1\, U2|LessThan23~1, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~4\, U2|BALL_ON_VALUE~4, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~1\, U2|BALL_ON_VALUE~1, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~2\, U2|BALL_ON_VALUE~2, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~3\, U2|BALL_ON_VALUE~3, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~5\, U2|BALL_ON_VALUE~5, VGA_Ball, 1
+instance = comp, \U2|LessThan23~3\, U2|LessThan23~3, VGA_Ball, 1
+instance = comp, \U2|LessThan23~2\, U2|LessThan23~2, VGA_Ball, 1
+instance = comp, \U2|LessThan23~4\, U2|LessThan23~4, VGA_Ball, 1
+instance = comp, \U2|LessThan22~2\, U2|LessThan22~2, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~6\, U2|BALL_ON_VALUE~6, VGA_Ball, 1
+instance = comp, \U2|GAME_RESET\, U2|GAME_RESET, VGA_Ball, 1
+instance = comp, \U2|Move_Ball:y_int[3]\, U2|\Move_Ball:y_int[3], VGA_Ball, 1
+instance = comp, \U2|LessThan22~1\, U2|LessThan22~1, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~0\, U2|BALL_ON_VALUE~0, VGA_Ball, 1
+instance = comp, \U2|BALL_ON_VALUE~7\, U2|BALL_ON_VALUE~7, VGA_Ball, 1
+instance = comp, \U1|red_out~4\, U1|red_out~4, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|red_out\, U1|red_out, VGA_Ball, 1
 instance = comp, \SW[16]~input\, SW[16]~input, VGA_Ball, 1
 instance = comp, \U2|TEMP_G\, U2|TEMP_G, VGA_Ball, 1
 instance = comp, \U1|green_out~0\, U1|green_out~0, VGA_Ball, 1
 instance = comp, \U1|green_out\, U1|green_out, VGA_Ball, 1
 instance = comp, \SW[15]~input\, SW[15]~input, VGA_Ball, 1
+<<<<<<< HEAD
 instance = comp, \U2|TEMP_B~0\, U2|TEMP_B~0, VGA_Ball, 1
 instance = comp, \U2|TEMP_B\, U2|TEMP_B, VGA_Ball, 1
 instance = comp, \U1|blue_out~0\, U1|blue_out~0, VGA_Ball, 1
+=======
+instance = comp, \U1|blue_out~4\, U1|blue_out~4, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 instance = comp, \U1|blue_out\, U1|blue_out, VGA_Ball, 1
 instance = comp, \SW[1]~input\, SW[1]~input, VGA_Ball, 1
 instance = comp, \SW[2]~input\, SW[2]~input, VGA_Ball, 1
@@ -713,3 +881,8 @@ instance = comp, \GPIO[0]~input\, GPIO[0]~input, VGA_Ball, 1
 instance = comp, \GPIO[1]~input\, GPIO[1]~input, VGA_Ball, 1
 instance = comp, \GPIO[2]~input\, GPIO[2]~input, VGA_Ball, 1
 instance = comp, \GPIO[3]~input\, GPIO[3]~input, VGA_Ball, 1
+<<<<<<< HEAD
+=======
+instance = comp, \GPIO[0]~input\, GPIO[0]~input, VGA_Ball, 1
+instance = comp, \GPIO[1]~input\, GPIO[1]~input, VGA_Ball, 1
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42

@@ -52,7 +52,8 @@ SIGNAL GAME_OVER, GAME_RESET	: STD_LOGIC;
 ---- Enemy stuffs
 --component enemy IS
 --   PORT(reset, vsync: IN std_logic;
---		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0)
+--		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
+--		  s: in std_logic_vector (3 downto 0)
 --		  );
 --END component;
 

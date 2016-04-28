@@ -130,7 +130,11 @@ SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
 
+<<<<<<< HEAD
 SIGNAL X_CTR, Y_CTR: STD_LOGIC;
+=======
+SIGNAL X_CTR, Y_CTR: std_logic;
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 
 BEGIN
 

@@ -41,6 +41,7 @@
 				},
 				{
 					"name" : "SW[17]",
+<<<<<<< HEAD
 					"strict" : false
 				},
 				{
@@ -49,6 +50,8 @@
 				},
 				{
 					"name" : "SW[15]",
+=======
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 					"strict" : false
 				},
 				{
@@ -60,6 +63,7 @@
 					"strict" : false
 				},
 				{
+<<<<<<< HEAD
 					"name" : "KEY[3]",
 					"strict" : false
 				},
@@ -73,6 +77,9 @@
 				},
 				{
 					"name" : "KEY[1]",
+=======
+					"name" : "SW[0]",
+>>>>>>> b27ecd1de06592577b52aa251deed35272b71b42
 					"strict" : false
 				}
 			]
