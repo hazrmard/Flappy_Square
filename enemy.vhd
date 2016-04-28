@@ -23,10 +23,9 @@
 -- Bouncing Ball Video 
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.all;
-USE  IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.std_logic_arith.all;
-use ieee.math_real.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_unsigned.all;
 -- Bouncing Ball Video 
 
 
@@ -40,46 +39,104 @@ END enemy;
 
 architecture behavior of enemy is
 
+component LFSR_GENERIC is			-- pseudo random number generator
 
-			-- Video Display Signals   
-SIGNAL Ball_on, Direction			: std_logic;  
-SIGNAL Ball_Y_motion : std_logic_vector(9 DOWNTO 0);
+	generic(Width: positive := 10);		-- length of pseudo-random sequence
+	port 	(	clock: in std_logic;
+				resetn: in std_logic;	-- active low reset
+				load: in std_logic;		-- active high load
+				seed: in std_logic_vector(Width-1 downto 0);	-- parallel seed input
+		 		parallel_out: out std_logic_vector(Width-1 downto 0); -- parallel data out
+				serial_out: out std_logic	-- serial data out (From last shift register)
+			);
+
+	end component LFSR_GENERIC;
+
+   
+SIGNAL Ball_on		: std_logic;  
+SIGNAL Ball_Y_motion, BAll_X_motion : std_logic_vector(9 DOWNTO 0);
 SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 
+SIGNAL count: integer:=0;
+SIGNAL resetn, load: std_logic;
+SIGNAL random, random1, random2: std_logic_vector (9 downto 0);
+SIGNAL seed: std_logic_vector (8 downto 0):="000000000";
 
-BEGIN           
+
+BEGIN
+
+r1: LFSR_GENERIC port map (clock => vsync, resetn=>resetn, load=>load, serial_out=>open, parallel_out=>random, seed=>seed);            
+
+Initialize_Random: process (VSYNC)
+begin
+	
+	if count<5 then
+		if count=0 then 		-- initialize random lookup table
+			resetn<='0';
+			load<='0';
+		elsif count=1 then 	-- populate table
+			resetn<='1';
+			load<='1';
+		elsif count=2 then	-- get ready for generating random numbers
+			resetn<='1';
+			load<='0';
+		elsif count=3 then	-- get first random number
+			random1<=random;
+		elsif count=4 then	-- get second random number
+			random2<=random;
+		end if;
+		count <= count +1;
+	else					-- get newer random numbers
+		if count=5 then
+			random1 <= random;
+			count<=6;
+		elsif count=6 then
+			random2<= random;
+			count<=5;
+		end if;
+	end if;
+
+end process;
 
 Move_Ball: process(RESET, VSYNC)--@@ Added sensitivity list
-	
-	variable seed1: integer:= 100;
-	variable seed2: integer:= 200;
-	variable rand1, rand2: real;
-	variable rint1, rint2: integer;
+	variable rint1, rint2: std_logic_vector (10 downto 0);
 	
 BEGIN
 
-
-
-	if reset'event and reset='1' then
-		uniform(seed1, seed2, rand1);
-		rint1:= integer(rand1 * real(612) - real(306)); -- random b/w -306 and +306
+	if reset'event and reset='1' then		--initializing enemy positions and motions
+	rint1 := '0' & conv_std_logic_vector((conv_integer(random1) mod 632), 10) - '0' & conv_std_logic_vector(316, 10);
+	rint2 := '0' & conv_std_logic_vector((conv_integer(random2) mod 472), 10) - '0' & conv_std_logic_vector(236, 10);
+	
 		if rint1 < 0 then		-- left of center
-			Ball_X_pos <= std_logic_vector(to_unsigned(rint1, 10));
+			Ball_X_pos <= rint1 (9 downto 0);		--removing sign bit
 		else						-- right of center
-			Ball_X_pos <= std_logic_vector(to_unsigned(320 + rint1, 10));
+			Ball_X_pos <= conv_std_logic_vector(320,10) + rint1 (9 downto 0);
 		end if;
 		
-		--@@ MODIFIED FOR Y AXIS
-		uniform(seed1, seed2, rand2);
-		rint2:= integer(rand2 * real(472) - real(236)); -- random b/w -306 and +306
-		if rint2 < 0 then		-- left of center
-			Ball_Y_pos <= std_logic_vector(to_unsigned(rint2, 10));
-		else						-- right of center
-			Ball_Y_pos <= std_logic_vector(to_unsigned(240 + rint2, 10));
+		if rint2 < 0 then		-- top of center
+			Ball_Y_pos <= rint2(9 downto 0); --remove sign bit
+		else						-- bottom of center
+			Ball_Y_pos <= conv_std_logic_vector(240,10) + rint2(9 downto 0);
 		end if;	
 	
 	elsif vsync'event and vsync='1' then
-	
+		
+		-- Bounce off top or bottom of screen
+			IF ('0' & Ball_Y_pos) >= 472 THEN
+				Ball_Y_motion <= CONV_STD_LOGIC_VECTOR(-2,10);
+			ELSIF Ball_Y_pos <= 8 THEN
+				Ball_Y_motion <= CONV_STD_LOGIC_VECTOR(2,10);
+			END IF;
+			
+			IF('0' & Ball_X_pos) >= 632 THEN
+				Ball_X_motion <= CONV_STD_LOGIC_VECTOR(-2,10);
+			ELSIF Ball_X_pos <= 8 THEN
+				Ball_X_motion <= CONV_STD_LOGIC_VECTOR(2,10);
+			END IF;
+			
+			-- Compute next ball Y position
+			Ball_Y_pos <= Ball_Y_pos + Ball_Y_motion;
+			Ball_X_pos <= Ball_X_pos + Ball_X_motion;
 	
 	end if;
 		

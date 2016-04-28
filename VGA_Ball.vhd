@@ -96,7 +96,7 @@ END COMPONENT;
 COMPONENT SENSOR_CONTROL IS
 	PORT(	ECHO, CLOCK	:	IN	STD_LOGIC;
 			TRIG			:	OUT STD_LOGIC; -- RECEIVE FROM ECHO PIN
-			OUT1, OUT2	:	OUT STD_LOGIC -- CONTROL
+			OUT1, OUT2	:	OUT STD_LOGIC; -- CONTROL
 			EN				:	IN STD_LOGIC -- ENABLE WHICH CONTROL
 			);
 END COMPONENT;
@@ -129,7 +129,7 @@ SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
 
-SIGNAL X_CTR, Y_CTR;
+SIGNAL X_CTR, Y_CTR: std_logic;
 
 BEGIN
 

@@ -40,14 +40,6 @@
 					"strict" : false
 				},
 				{
-					"name" : "GPIO[0]",
-					"strict" : false
-				},
-				{
-					"name" : "GPIO[1]",
-					"strict" : false
-				},
-				{
 					"name" : "SW[17]",
 					"strict" : false
 				},
@@ -57,10 +49,6 @@
 				},
 				{
 					"name" : "SW[15]",
-					"strict" : false
-				},
-				{
-					"name" : "CLOCK_50",
 					"strict" : false
 				},
 				{
