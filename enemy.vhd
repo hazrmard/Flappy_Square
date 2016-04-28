@@ -1,11 +1,33 @@
-			-- Bouncing Ball Video 
+-------------------------------------------------------------------------------
+--
+-- Project					: Enemy
+-- File name				: enemy.vhd
+-- Title						: enemy 
+-- Description				: Describe the motion of the enemy
+-- Design library			: N/A
+-- Analysis Dependency	: VGA_SYNC.vhd
+-- Simulator(s)			: ModelSim-Altera version 6.1g
+-- Initialization			: none
+-- Notes						: This model is designed for synthesis
+--								: Compile with VHDL'93
+--
+-------------------------------------------------------------------------------
+--
+-- Revisions
+--			Date		Author			Revision		Comments
+--		3/11/2008	W.H.Robinson	Rev A			Creation
+--		3/13/2012	W.H.Robinson	Rev B			Update for DE2-115 Board
+--		5/03/2016	Group 3			Rev C			Editted for final project - Copied from Ball.vhd
+--			
+-------------------------------------------------------------------------------
+-- Bouncing Ball Video 
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.all;
 USE  IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.std_logic_arith.all;
 use ieee.math_real.all;
 use ieee.numeric_std.all;
-			-- Bouncing Ball Video 
+-- Bouncing Ball Video 
 
 
 ENTITY enemy IS

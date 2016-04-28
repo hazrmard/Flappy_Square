@@ -1,3 +1,26 @@
+-------------------------------------------------------------------------------
+--
+-- Project					: VGA_SYNC
+-- File name				: VGA_SYNC.vhd
+-- Title						: VGA SYNC CONTROL
+-- Description				: Sync module needed to use VGA 
+--								: 
+-- Design library			: N/A
+-- Analysis Dependency	: VGA_SYNC.vhd
+-- Simulator(s)			: ModelSim-Altera version 6.1g
+-- Initialization			: none
+-- Notes						: This model is designed for synthesis
+--								: Compile with VHDL'93
+--
+-------------------------------------------------------------------------------
+--
+-- Revisions
+--			Date		Author			Revision		Comments
+--		3/11/2008	W.H.Robinson	Rev A			Creation
+--		3/13/2012	W.H.Robinson	Rev B			Update for DE2-115 Board
+--			
+-------------------------------------------------------------------------------
+
 library IEEE;
 use  IEEE.STD_LOGIC_1164.all;
 use  IEEE.STD_LOGIC_ARITH.all;

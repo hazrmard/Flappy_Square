@@ -3,8 +3,8 @@
 -- Project					: VGA_Ball
 -- File name				: VGA_Ball.vhd
 -- Title						: VGA Moving Ball 
--- Description				:  
---								: 
+-- Description				: Top level file for the final project. 
+--								: Mapped the key to the DE2 - 115 board
 -- Design library			: N/A
 -- Analysis Dependency	: VGA_SYNC.vhd
 -- Simulator(s)			: ModelSim-Altera version 6.1g
@@ -16,9 +16,9 @@
 --
 -- Revisions
 --			Date		Author			Revision		Comments
---		3/11/2008		W.H.Robinson	Rev A			Creation
---		3/13/2012		W.H.Robinson	Rev B			Update for DE2-115 Board
---
+--		3/11/2008	W.H.Robinson	Rev A			Creation
+--		3/13/2012	W.H.Robinson	Rev B			Update for DE2-115 Board
+--		5/03/2016	Group 3			Rev C			Editted for final project
 --			
 -------------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ ENTITY VGA_Ball IS
 -- 	Note: It is easier to identify individual ports and change their order
 --	or types when their declarations are on separate lines.
 --	This also helps the readability of your code.
-
+	GPIO: INOUT STD_LOGIC_VECTOR(3 DOWNTO 0); -- INPUT FOR SENSOR
     -- Clocks
     
     CLOCK_50	: IN STD_LOGIC;  -- 50 MHz
@@ -93,6 +93,14 @@ COMPONENT ball
         Vert_sync	: IN std_logic);
 END COMPONENT;
 
+COMPONENT SENSOR_CONTROL IS
+	PORT(	ECHO, CLOCK	:	IN	STD_LOGIC;
+			TRIG			:	OUT STD_LOGIC; -- RECEIVE FROM ECHO PIN
+			OUT1, OUT2	:	OUT STD_LOGIC -- CONTROL
+			EN				:	IN STD_LOGIC -- ENABLE WHICH CONTROL
+			);
+END COMPONENT;
+
 component Debounce
   Port 
   (
@@ -121,6 +129,8 @@ SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
 
+SIGNAL X_CTR, Y_CTR;
+
 BEGIN
 
 	VGA_R(6 DOWNTO 0) <= "0" & SW(17) & "00000";
@@ -130,11 +140,7 @@ BEGIN
 	VGA_HS <= horiz_sync_int;
 	VGA_VS <= vert_sync_int;
 
-	--INVERT THE PUSH BUTTON
-	N_UP 		<= NOT UP;
-	N_DOWN	<= NOT DOWN;
-	N_SLIDE_L<= NOT SLIDE_L;
-	N_SLIDE_R<= NOT SLIDE_R;
+
 
 	U1: VGA_SYNC_module PORT MAP
 		(clock_50Mhz		=>	CLOCK_50,
@@ -165,26 +171,42 @@ BEGIN
 		 Blue				=> blue_int,
 		 Vert_sync		=> vert_sync_int
 		);
-		
-	U3: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(0),
-		 Dbx => up);
-		 
-	U4: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(1),
-		 Dbx => down);
-		 
-	U5: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(3),
-		 Dbx => slide_l);
-	
-	U6: Debounce Port Map
-		(CLK => clock_50,
-		 x => KEY(2),
-		 Dbx => slide_r);
+------------------------------------------------------- USE PUSH BUTTON ------------------------------------------------
+--	--INVERT THE PUSH BUTTON
+--	N_UP 		<= NOT UP;
+--	N_DOWN	<= NOT DOWN;
+--	N_SLIDE_L<= NOT SLIDE_L;
+--	N_SLIDE_R<= NOT SLIDE_R;
+----USE KEY		
+--	U3: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(0),
+--		 Dbx => up);
+--		 
+--	U4: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(1),
+--		 Dbx => down);
+--		 
+--	U5: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(3),
+--		 Dbx => slide_l);
+--	
+--	U6: Debounce Port Map
+--		(CLK => clock_50,
+--		 x => KEY(2),
+--		 Dbx => slide_r);
+
+------------------------------------------------------------USE SENSOR----------------------------------------------
+UP_DOWN: SENSOR_CONTROL PORT MAP
+		(	TRIG	=> GPIO(0),
+			CLOCK	=> CLOCK_50,
+			ECHO	=> GPIO(1),
+			OUT1	=> N_UP,
+			OUT2	=> N_DOWN,
+			EN		=>	X_CTR
+			);
 		 
 END structural;
 

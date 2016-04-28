@@ -1,10 +1,31 @@
-			-- Bouncing Ball Video 
+-------------------------------------------------------------------------------
+--
+-- Project					: Ball
+-- File name				: Ball.vhd
+-- Title						: Ball Or User
+-- Description				: Describe the motion of the player
+-- Design library			: N/A
+-- Analysis Dependency	: VGA_SYNC.vhd
+-- Simulator(s)			: ModelSim-Altera version 6.1g
+-- Initialization			: none
+-- Notes						: This model is designed for synthesis
+--								: Compile with VHDL'93
+--
+-------------------------------------------------------------------------------
+--
+-- Revisions
+--			Date		Author			Revision		Comments
+--		3/11/2008	W.H.Robinson	Rev A			Creation
+--		3/13/2012	W.H.Robinson	Rev B			Update for DE2-115 Board
+--		5/03/2016	Group 3			Rev C			Editted for final project
+--			
+-------------------------------------------------------------------------------
+-- Bouncing Ball Video 
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.all;
 USE  IEEE.STD_LOGIC_UNSIGNED.all;
 use IEEE.std_logic_arith.all;
-			-- Bouncing Ball Video 
-
+-- Bouncing Ball Video 
 
 ENTITY ball IS
 
@@ -67,11 +88,35 @@ SIGNAL ENEMY_ON_VALUE: BOOLEAN; -- FLAG FOR ENEMY_ON
 SIGNAL BALL_ON_VALUE: BOOLEAN; -- FLAG FOR BALL_ON
 
 --TODO: Collision collider
+IMPURE FUNCTION COLLISION RETURN STD_LOGIC IS
+VARIABLE BALL_X_INT, BALL_Y_INT, SIZE_INT, ENEMY_X_INT, ENEMY_Y_INT	: INTEGER;
+BEGIN
+	BALL_X_INT 	:= CONV_INTEGER(UNSIGNED(BALL_X_POS));
+	BALL_Y_INT 	:= CONV_INTEGER(UNSIGNED(BALL_Y_POS));
+	SIZE_INT 	:= CONV_INTEGER(UNSIGNED(SIZE));
+	
+--	FOR I IN 0 TO 4 LOOP
+--		ENEMY_X_INT := CONV_INTEGER(UNSIGNED(ENEMY_X(I)));
+--		ENEMY_Y_INT := CONV_INTEGER(UNSIGNED(ENEMY_Y(I)));
+--		IF((BALL_X_INT + SIZE_INT + SIZE_INT = ENEMY_X_INT) 
+--			AND (BALL_Y_INT + SIZE_INT + SIZE_INT = ENEMY_Y_INT)
+--			AND (BALL_X_INT = ENEMY_X_INT + SIZE_INT + SIZE_INT) 
+--			AND (BALL_Y_INT = ENEMY_Y_INT + SIZE_INT + SIZE_INT)) THEN
+--			RETURN '1';
+--		END IF;
+--	END LOOP;
+
+	IF (BALL_ON AND ENEMY_ON(0, 0)) THEN
+		RETURN '1';
+	ELSE
+		RETURN '0';
+	END IF;
+END FUNCTION COLLISION;
 
 BEGIN           
 
 Size <= CONV_STD_LOGIC_VECTOR(8,10); -- DEFINE SIZE
-GAME_RESET <= RESET;
+GAME_RESET <= RESET OR COLLISION;
 
 --ASSIGN OUTPUT FROM TEMP
 RED <= TEMP_R;
@@ -127,23 +172,24 @@ END IF;
 END process RGB_Display;
 
 Move_Ball: process(reset, vert_sync, up, down, slide_l, slide_r)
-variable x_int, y_int : integer;
+variable x_int, y_int, SIZE_INT : integer;
 BEGIN
+	SIZE_INT := CONV_INTEGER(UNSIGNED(SIZE));
 	--RESET TO RESET THE LOCATION
 	IF(GAME_RESET = '1') then
 		x_int := 140;
-		y_int := 480;
+		y_int := 480 - SIZE_INT;
 			
 	-- Move ball once every vertical sync
 	ELSIF vert_sync'event and vert_sync = '1' then
 	
 		--MOVE IN Y DIRECTION
 		IF(UP = '1') THEN
-			IF(y_int - SIZE > 0) THEN
+			IF(y_int - SIZE_INT > 0) THEN
 				y_int := y_int - 2;
 			END IF;
 		ELSIF(DOWN = '1') THEN
-			IF(y_int + SIZE < 480) THEN
+			IF(y_int + SIZE_INT < 480) THEN
 				Y_INT := y_int + 2;
 			END IF;
 		END IF;
@@ -164,16 +210,7 @@ BEGIN
 	BALL_X_POS <= conv_std_logic_vector(x_int, 10);
 END process Move_Ball;
 
-COLLISION: PROCESS(TEMP_R, TEMP_G, TEMP_B)
---VARIABLE CHECK_ENEMY: BOOLEAN;
-BEGIN
---	CHECK_ENEMY := ENEMY_ON(0,0);
---	IF(BALL_ON_VALUE AND CHECK_ENEMY) THEN
---		GAME_OVER <= '1';
---	ELSE
---		GAME_OVER <= '0';
---	END IF;
-END PROCESS COLLISION;
+
 
 END behavior;
 
