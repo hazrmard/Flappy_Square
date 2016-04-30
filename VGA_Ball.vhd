@@ -30,6 +30,7 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_unsigned.ALL;
 use IEEE.std_logic_arith.all;
 
+
 -- Entity declaration
 -- 		Defines the interface to the entity
 
@@ -172,12 +173,12 @@ BEGIN
 		 Vert_sync		=> vert_sync_int
 		);
 ------------------------------------------------------- USE PUSH BUTTON ------------------------------------------------
---	--INVERT THE PUSH BUTTON
---	N_UP 		<= NOT UP;
---	N_DOWN	<= NOT DOWN;
---	N_SLIDE_L<= NOT SLIDE_L;
---	N_SLIDE_R<= NOT SLIDE_R;
-----USE KEY		
+	--INVERT THE PUSH BUTTON
+	N_UP 		<= NOT KEY(0);
+	N_DOWN	<= NOT KEY(1);
+	N_SLIDE_L<= NOT KEY(3);
+	N_SLIDE_R<= NOT KEY(2);
+--USE KEY		
 --	U3: Debounce Port Map
 --		(CLK => clock_50,
 --		 x => KEY(0),
@@ -199,14 +200,29 @@ BEGIN
 --		 Dbx => slide_r);
 
 ------------------------------------------------------------USE SENSOR----------------------------------------------
-UP_DOWN: SENSOR_CONTROL PORT MAP
-		(	TRIG	=> GPIO(0),
-			CLOCK	=> CLOCK_50,
-			ECHO	=> GPIO(1),
-			OUT1	=> N_UP,
-			OUT2	=> N_DOWN,
-			EN		=>	X_CTR
-			);
-		 
+--UP_DOWN: SENSOR_CONTROL PORT MAP
+--		(	TRIG	=> GPIO(0),
+--			CLOCK	=> CLOCK_50,
+--			ECHO	=> GPIO(1),
+--			OUT1	=> N_UP,
+--			OUT2	=> N_DOWN,
+--			EN		=>	X_CTR
+--			);
+--		 
+--L_R	: SENSOR_CONTROL PORT MAP
+--		(	TRIG	=> GPIO(2),
+--			CLOCK	=> CLOCK_50,
+--			ECHO	=> GPIO(3),
+--			OUT1	=> N_SLIDE_L,
+--			OUT2	=> N_SLIDE_R,
+--			EN		=>	Y_CTR
+--			);
+--X_CTR <= '1';			
+--PROCESS(CLOCK_50)
+--COUNT:	INTEGER := 0;
+--BEGIN
+--	IF(COUNT = 0) THEN
+--		
+
 END structural;
 
