@@ -48,12 +48,12 @@ SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;
 SIGNAL GAME_OVER, GAME_RESET	: STD_LOGIC;
 
 ---- Enemy stuffs
---component enemy IS
---   PORT(reset, vsync: IN std_logic;
---		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
---		  s: in std_logic_vector (3 downto 0)
---		  );
---END component;
+component enemy IS
+   PORT(reset, vsync: IN std_logic;
+		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
+		  s: in std_logic_vector (2 downto 0)
+		  );
+END component;
 
 TYPE ENEMY_POINT is array (0 to 4) of std_logic_vector(9 downto 0);
 SIGNAL ENEMY_X, ENEMY_Y	: ENEMY_POINT; -- DEFINE ENEMIES LOCATION

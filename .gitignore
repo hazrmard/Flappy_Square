@@ -63,4 +63,4 @@
 */timing/
 */testbench/
 */*_sim/
-db/
+db/*
