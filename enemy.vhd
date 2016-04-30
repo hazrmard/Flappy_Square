@@ -60,7 +60,7 @@ SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 SIGNAL count: integer:=0;
 SIGNAL resetn, load: std_logic;
 SIGNAL random, random1, random2: std_logic_vector (9 downto 0);
-SIGNAL seed: std_logic_vector (9 downto 0);
+SIGNAL seed: std_logic_vector (9 downto 0):="0000000" & s;
 
 
 BEGIN
@@ -103,6 +103,7 @@ Move_Ball: process(RESET, VSYNC)--@@ Added sensitivity list
 	variable rint1, rint2: std_logic_vector (10 downto 0);
 	
 BEGIN
+
 
 	if RESET = '1' then		--initializing enemy positions and motions
 	rint1 := ('0' & conv_std_logic_vector((conv_integer(random1) mod 632), 10)) - ('0' & conv_std_logic_vector(316, 10));

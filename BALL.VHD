@@ -49,7 +49,7 @@ SIGNAL Ball_Y_pos, Ball_X_pos	: std_logic_vector(9 DOWNTO 0);
 SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;
 SIGNAL GAME_OVER, GAME_RESET	: STD_LOGIC;
 
--- Enemy stuffs
+---- Enemy stuffs
 component enemy IS
    PORT(reset, vsync: IN std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
