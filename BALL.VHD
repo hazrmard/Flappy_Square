@@ -36,20 +36,26 @@ ENTITY ball IS
 		  pixel_row, pixel_column			  : IN std_logic_vector(9 DOWNTO 0);
         Red,Green,Blue 						  : OUT std_logic;
 		  x, y 									  : OUT STD_LOGIC_VECTOR (9 downto 0);
-        Vert_sync								  : IN std_logic);
+        Vert_sync								  : IN std_logic;
+		  RESET_OUT								  : OUT STD_LOGIC);
 		
 END ball;
 
 
 architecture behavior of ball is
 
--- Video Display Signals   
-SIGNAL Size 						: std_logic_vector(9 DOWNTO 0);  
-SIGNAL Ball_Y_pos, Ball_X_pos	: std_logic_vector(9 DOWNTO 0);
-SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;
-SIGNAL GAME_OVER, GAME_RESET	: STD_LOGIC;
+---------------------------------SIGNALS DECLARATION--------------------------------  
+SIGNAL Size 						: std_logic_vector(9 DOWNTO 0);			-- Size of the ball 
+SIGNAL Ball_Y_pos, Ball_X_pos	: std_logic_vector(9 DOWNTO 0); 			-- Current ball position
+SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;									-- To be mapped to VGA	
+SIGNAL GAME_OVER, GAME_RESET	: STD_LOGIC;									-- Signal for resetting
+SIGNAL ENEMY_ON_VALUE: BOOLEAN; 													-- FLAG FOR ENEMY_ON
+SIGNAL BALL_ON_VALUE: BOOLEAN; 													-- FLAG FOR BALL_ON
+TYPE ENEMY_POINT is array (0 to 4) of std_logic_vector(9 downto 0);	-- ARRAY FOR ENEMIES
+SIGNAL ENEMY_X, ENEMY_Y	: ENEMY_POINT;											-- DEFINE ENEMIES LOCATION
 
----- Enemy stuffs
+
+---------------------------------COMPONENTS DECLARATION----------------------------------
 component enemy IS
    PORT(reset, vsync: IN std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
@@ -57,11 +63,13 @@ component enemy IS
 		  );
 END component;
 
-TYPE ENEMY_POINT is array (0 to 4) of std_logic_vector(9 downto 0);
-SIGNAL ENEMY_X, ENEMY_Y	: ENEMY_POINT; -- DEFINE ENEMIES LOCATION
 
---UTILITY FUNCTIONS
-IMPURE FUNCTION ENEMY_ON RETURN BOOLEAN IS -- TURN ON ENEMIES
+
+--------------------------------------UTILITY FUNCTIONS--------------------------
+
+--CHECK WHETHER TO TURN ON THE ENEMY OR NOT.
+--RETURN TRUE IF SHOULD
+IMPURE FUNCTION ENEMY_ON RETURN BOOLEAN IS
 VARIABLE PIX_COL_INT, PIX_ROW_INT, SIZE_INT:	INTEGER;
 TYPE ENEMY_POINT_INTEGER IS ARRAY (0 TO 4) OF INTEGER;
 VARIABLE ENEMY_X_INT, ENEMY_Y_INT: ENEMY_POINT;
@@ -110,7 +118,9 @@ BEGIN
 	RETURN FALSE;
 END ENEMY_ON;
 
-IMPURE FUNCTION BALL_ON RETURN BOOLEAN IS --TURN ON BALL
+--CHECK WHETHER TO TURN ON THE BALL/PLAYER OR NOT.
+--RETURN TRUE IF SHOULD
+IMPURE FUNCTION BALL_ON RETURN BOOLEAN IS
 VARIABLE BALL_X_INT, BALL_Y_INT, PIX_ROW_INT, PIX_COL_INT, SIZE_INT:	INTEGER;
 BEGIN
 	PIX_COL_INT	:= CONV_INTEGER(PIXEL_COLUMN);
@@ -129,17 +139,15 @@ BEGIN
 	END IF;
 END BALL_ON;
 
-SIGNAL ENEMY_ON_VALUE: BOOLEAN; -- FLAG FOR ENEMY_ON
-SIGNAL BALL_ON_VALUE: BOOLEAN; -- FLAG FOR BALL_ON
-
---TODO: Collision collider
+--CHECK THE CONDITION FOR COLLISION PHYSICS
+--RETURN '1' IF THE COLLISION IS DETECTED
 IMPURE FUNCTION COLLISION RETURN STD_LOGIC IS
 VARIABLE BALL_X_INT, BALL_Y_INT, SIZE_INT, ENEMY_X_INT, ENEMY_Y_INT	: INTEGER;
 BEGIN
 	BALL_X_INT 	:= CONV_INTEGER(UNSIGNED(BALL_X_POS));
 	BALL_Y_INT 	:= CONV_INTEGER(UNSIGNED(BALL_Y_POS));
 	SIZE_INT 	:= CONV_INTEGER(UNSIGNED(SIZE));
-	IF (BALL_ON AND ENEMY_ON) THEN
+	IF (BALL_ON AND ENEMY_ON) THEN		--CHECK WHETHER THE BALL AND THE ENEMY ARE ON AT THE SAME TIME
 		RETURN '1';
 	ELSE
 		RETURN '0';
@@ -147,9 +155,9 @@ BEGIN
 END FUNCTION COLLISION;
 
 BEGIN           
-GAME_OVER <= COLLISION;
-Size <= CONV_STD_LOGIC_VECTOR(8,10); -- DEFINE SIZE
-GAME_RESET <= RESET OR GAME_OVER;
+GAME_OVER <= COLLISION;						-- CALL COLLISION FUNCTION
+Size <= CONV_STD_LOGIC_VECTOR(8,10);	-- DEFINE SIZE
+GAME_RESET <= RESET OR GAME_OVER;		-- CHECK RESETTING CONDITION
 
 --ASSIGN OUTPUT FROM TEMP
 RED <= TEMP_R;
@@ -163,7 +171,9 @@ y <= BALL_Y_POS;
 ENEMY_ON_VALUE <= ENEMY_ON;-- UPDATE ENEMY FLAG
 BALL_ON_VALUE <= BALL_ON;
 
---DEBUG FOR DISPLAY ENEMY
+RESET_OUT <= GAME_RESET;
+
+----DEBUG FOR DISPLAY ENEMY, UNCOMMENT FOR STATICS ENEMY
 --ENEMY_X(0) <= CONV_STD_LOGIC_VECTOR(230, 10);
 --ENEMY_Y(0) <= CONV_STD_LOGIC_VECTOR(230, 10);
 --ENEMY_X(1) <= CONV_STD_LOGIC_VECTOR(80, 10);
@@ -187,6 +197,7 @@ GEN_ENEMY:
 			 );
 	END GENERATE;
 			 
+-- MAP THE COLOR OF PLAYERS, ENEMIES, AND BACKGROUND
 RGB_Display: Process (BALL_ON_VALUE, ENEMY_ON_VALUE, GAME_RESET)
 BEGIN
 	--display ball
@@ -205,14 +216,15 @@ BEGIN
 END IF;
 END process RGB_Display;
 
+-- BALL CONTROL
 Move_Ball: process(reset, vert_sync, up, down, slide_l, slide_r)
 variable x_int, y_int, SIZE_INT : integer;
 BEGIN
 	SIZE_INT := CONV_INTEGER(UNSIGNED(SIZE));
-	--RESET TO RESET THE LOCATION
+	--RESET TO RESET THE LOCATION(320,240)
 	IF(GAME_RESET = '1') then
-		x_int := SIZE_INT;
-		y_int := SIZE_INT;
+		x_int := 320 + SIZE_INT;
+		y_int := 240 + SIZE_INT;
 			
 	-- Move ball once every vertical sync
 	ELSIF vert_sync'event and vert_sync = '1' then
@@ -243,34 +255,5 @@ BEGIN
 	BALL_Y_POS <= conv_std_logic_vector(y_int, 10);
 	BALL_X_POS <= conv_std_logic_vector(x_int, 10);
 END process Move_Ball;
-
-
---COLLISION_COLLIDER: process (enemy_x, enemy_y, ball_x_POS, ball_y_POS)
---VARIABLE BALL_X_INT, BALL_Y_INT, ENEMY_X_INT, ENEMY_Y_INT,SIZE_INT	: INTEGER;
---VARIABLE DIF_X, DIF_Y	: INTEGER;
---BEGIN
---BALL_X_INT 	:= CONV_INTEGER(UNSIGNED(BALL_X_POS));
---BALL_Y_INT 	:= CONV_INTEGER(UNSIGNED(BALL_Y_POS));
---SIZE_INT		:= CONV_INTEGER(UNSIGNED(SIZE));
---for I in 0 to 4 loop
---	ENEMY_X_INT 	:= CONV_INTEGER(UNSIGNED(ENEMY_X(I)));
---	ENEMY_Y_INT 	:= CONV_INTEGER(UNSIGNED(ENEMY_Y(I)));
---	
---	DIF_X := BALL_X_INT - ENEMY_X_INT;
---	DIF_Y := BALL_Y_INT - ENEMY_Y_INT;
---	
---	IF((DIF_X >= 0 AND DIF_X <= 2*SIZE_INT) AND (DIF_Y >= 0 AND DIF_Y <= 2*SIZE_INT)) THEN
---		GAME_OVER <= '1';
---	ELSIF((DIF_X <= 0 AND -1*DIF_X <= 2*SIZE_INT) AND (DIF_Y >= 0 AND DIF_Y <= 2*SIZE_INT)) THEN
---		GAME_OVER <= '1';
---	ELSIF((DIF_X >= 0 AND DIF_X <= 2*SIZE_INT) AND (DIF_Y <= 0 AND -1*DIF_Y <= 2*SIZE_INT)) THEN
---		GAME_OVER <= '1';
---	ELSIF((DIF_X <= 0 AND -1*DIF_X <= 2*SIZE_INT) AND (DIF_Y <= 0 AND -1*DIF_Y <= 2*SIZE_INT)) THEN
---		GAME_OVER <= '1';
---	ELSE
---		GAME_OVER <= '0';
---	END IF;
---end loop; 
---end process;
 
 END behavior;

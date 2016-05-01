@@ -91,7 +91,8 @@ COMPONENT ball
 		  pixel_row, pixel_column		: IN std_logic_vector(9 DOWNTO 0);
         Red,Green,Blue 				: OUT std_logic;
 		  x, y : OUT STD_LOGIC_VECTOR (9 downto 0);
-        Vert_sync	: IN std_logic);
+        Vert_sync	: IN std_logic;
+		  RESET_OUT	: OUT STD_LOGIC);
 END COMPONENT;
 
 COMPONENT SENSOR_CONTROL IS
@@ -129,6 +130,7 @@ SIGNAL N_UP, N_DOWN, N_SLIDE_L, N_SLIDE_R: STD_LOGIC;
 SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
+SIGNAL RESET_COUNT: STD_LOGIC;
 
 SIGNAL X_CTR, Y_CTR: std_logic;
 
@@ -170,14 +172,15 @@ BEGIN
 		 Red				=> red_int,
 		 Green			=> green_int,
 		 Blue				=> blue_int,
-		 Vert_sync		=> vert_sync_int
+		 Vert_sync		=> vert_sync_int,
+		 RESET_OUT		=> RESET_COUNT
 		);
 ------------------------------------------------------- USE PUSH BUTTON ------------------------------------------------
 	--INVERT THE PUSH BUTTON
-	N_UP 		<= NOT KEY(0);
-	N_DOWN	<= NOT KEY(1);
-	N_SLIDE_L<= NOT KEY(3);
-	N_SLIDE_R<= NOT KEY(2);
+--	N_UP 		<= NOT KEY(0);
+--	N_DOWN	<= NOT KEY(1);
+--	N_SLIDE_L<= NOT KEY(3);
+--	N_SLIDE_R<= NOT KEY(2);
 --USE KEY		
 --	U3: Debounce Port Map
 --		(CLK => clock_50,
@@ -200,29 +203,23 @@ BEGIN
 --		 Dbx => slide_r);
 
 ------------------------------------------------------------USE SENSOR----------------------------------------------
---UP_DOWN: SENSOR_CONTROL PORT MAP
---		(	TRIG	=> GPIO(0),
---			CLOCK	=> CLOCK_50,
---			ECHO	=> GPIO(1),
---			OUT1	=> N_UP,
---			OUT2	=> N_DOWN,
---			EN		=>	X_CTR
---			);
---		 
---L_R	: SENSOR_CONTROL PORT MAP
---		(	TRIG	=> GPIO(2),
---			CLOCK	=> CLOCK_50,
---			ECHO	=> GPIO(3),
---			OUT1	=> N_SLIDE_L,
---			OUT2	=> N_SLIDE_R,
---			EN		=>	Y_CTR
---			);
---X_CTR <= '1';			
---PROCESS(CLOCK_50)
---COUNT:	INTEGER := 0;
---BEGIN
---	IF(COUNT = 0) THEN
---		
+UP_DOWN: SENSOR_CONTROL PORT MAP
+		(	TRIG	=> GPIO(0),
+			CLOCK	=> CLOCK_50,
+			ECHO	=> GPIO(1),
+			OUT1	=> N_UP,
+			OUT2	=> N_DOWN,
+			EN		=>	'1' -- Sensor always on
+			);
+		 
+L_R	: SENSOR_CONTROL PORT MAP
+		(	TRIG	=> GPIO(2),
+			CLOCK	=> CLOCK_50,
+			ECHO	=> GPIO(3),
+			OUT1	=> N_SLIDE_L,
+			OUT2	=> N_SLIDE_R,
+			EN		=>	'1' -- Sensor always on
+			);			
 
 END structural;
 
