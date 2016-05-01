@@ -38,3 +38,4 @@ incremental_db/
 */*_sim/
 db/
 simulation/
+output_files/
