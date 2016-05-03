@@ -51,7 +51,7 @@ SIGNAL TEMP_R, TEMP_G, TEMP_B : STD_LOGIC;									-- To be mapped to VGA
 SIGNAL GAME_OVER, GAME_RESET	: STD_LOGIC;									-- Signal for resetting
 SIGNAL ENEMY_ON_VALUE: BOOLEAN; 													-- FLAG FOR ENEMY_ON
 SIGNAL BALL_ON_VALUE: BOOLEAN; 													-- FLAG FOR BALL_ON
-TYPE ENEMY_POINT is array (0 to 4) of std_logic_vector(9 downto 0);	-- ARRAY FOR ENEMIES
+TYPE ENEMY_POINT is array (0 to 7) of std_logic_vector(9 downto 0);	-- ARRAY FOR ENEMIES
 SIGNAL ENEMY_X, ENEMY_Y	: ENEMY_POINT;											-- DEFINE ENEMIES LOCATION
 
 
@@ -71,7 +71,7 @@ END component;
 --RETURN TRUE IF SHOULD
 IMPURE FUNCTION ENEMY_ON RETURN BOOLEAN IS
 VARIABLE PIX_COL_INT, PIX_ROW_INT, SIZE_INT:	INTEGER;
-TYPE ENEMY_POINT_INTEGER IS ARRAY (0 TO 4) OF INTEGER;
+TYPE ENEMY_POINT_INTEGER IS ARRAY (0 TO 7) OF INTEGER;
 VARIABLE ENEMY_X_INT, ENEMY_Y_INT: ENEMY_POINT;
 BEGIN
 	PIX_COL_INT	:= CONV_INTEGER(PIXEL_COLUMN);
@@ -80,40 +80,14 @@ BEGIN
 	ENEMY_X_INT	:= ENEMY_X;
 	ENEMY_Y_INT	:= ENEMY_Y;
 	
-	IF (ENEMY_X_INT(0) <= piX_col_INT + Size_INT) AND
-		(ENEMY_X_INT(0) + Size_INT >= pix_col_INT) AND
-		(ENEMY_Y_INT(0)  <= pix_row_INT + Size_INT) AND
-		(ENEMY_Y_INT(0) + Size_INT >= pix_row_INT ) THEN
-				RETURN TRUE;
-	END IF;
-	
-	IF (ENEMY_X_INT(1) <= piX_col_INT + Size_INT) AND
-		(ENEMY_X_INT(1) + Size_INT >= pix_col_INT) AND
-		(ENEMY_Y_INT(1)  <= pix_row_INT + Size_INT) AND
-		(ENEMY_Y_INT(1) + Size_INT >= pix_row_INT ) THEN
-				RETURN TRUE;
-	END IF;
-	
-	IF (ENEMY_X_INT(2) <= piX_col_INT + Size_INT) AND
-		(ENEMY_X_INT(2) + Size_INT >= pix_col_INT) AND
-		(ENEMY_Y_INT(2)  <= pix_row_INT + Size_INT) AND
-		(ENEMY_Y_INT(2) + Size_INT >= pix_row_INT ) THEN
-				RETURN TRUE;
-	END IF;
-	
-	IF (ENEMY_X_INT(3) <= piX_col_INT + Size_INT) AND
-		(ENEMY_X_INT(3) + Size_INT >= pix_col_INT) AND
-		(ENEMY_Y_INT(3)  <= pix_row_INT + Size_INT) AND
-		(ENEMY_Y_INT(3) + Size_INT >= pix_row_INT ) THEN
-				RETURN TRUE;
-	END IF;
-	
-	IF (ENEMY_X_INT(4) <= piX_col_INT + Size_INT) AND
-		(ENEMY_X_INT(4) + Size_INT >= pix_col_INT) AND
-		(ENEMY_Y_INT(4)  <= pix_row_INT + Size_INT) AND
-		(ENEMY_Y_INT(4) + Size_INT >= pix_row_INT ) THEN
-				RETURN TRUE;
-	END IF;
+		FOR I IN 0 TO 7 LOOP
+		IF (ENEMY_X_INT(I) <= piX_col_INT + Size_INT) AND
+			(ENEMY_X_INT(I) + Size_INT >= pix_col_INT) AND
+			(ENEMY_Y_INT(I)  <= pix_row_INT + Size_INT) AND
+			(ENEMY_Y_INT(I) + Size_INT >= pix_row_INT ) THEN
+					RETURN TRUE;
+		END IF;
+	END LOOP;
 	
 	RETURN FALSE;
 END ENEMY_ON;
@@ -187,7 +161,7 @@ RESET_OUT <= GAME_RESET;
 
 --INSTANTIATE ENEMIES
 GEN_ENEMY:
-	FOR I IN 0 TO 4 GENERATE
+	FOR I IN 0 TO 7 GENERATE
 		ENEMY_INST: ENEMY PORT MAP
 			(RESET 		=> RESET,
 			 VSYNC		=> VERT_SYNC,
@@ -196,7 +170,8 @@ GEN_ENEMY:
 			 S				=> CONV_STD_LOGIC_VECTOR(I,3)
 			 );
 	END GENERATE;
-			 
+		
+	
 -- MAP THE COLOR OF PLAYERS, ENEMIES, AND BACKGROUND
 RGB_Display: Process (BALL_ON_VALUE, ENEMY_ON_VALUE, GAME_RESET)
 BEGIN
