@@ -73,11 +73,7 @@ r1: LFSR_GENERIC port map (clock => vsync, resetn=>resetn, load=>load, serial_ou
 Initialize_Random: process (VSYNC)
 begin
 	
-<<<<<<< HEAD
---	if count<3 then
-=======
 	if vsync='1' then
->>>>>>> 8bc83d9090e4a9e91772eb7e327bb356ae21fb0a
 		if count=0 then 		-- initialize random lookup table
 			resetn<='0';
 			load<='0';
@@ -90,13 +86,7 @@ begin
 			resetn<='1';
 			load<='0';
 			count<=3;
-<<<<<<< HEAD
-		--end if;
---	else					-- get newer random numbers
-		elsif count=3 then
-=======
 		elsif count=3 then	-- get newer random numbers
->>>>>>> 8bc83d9090e4a9e91772eb7e327bb356ae21fb0a
 			random1 <= random;
 			count<=4;
 		elsif count=4 then
@@ -109,7 +99,7 @@ begin
 			random4<= random;
 			count<=3;
 		end if;
---	end if;
+	end if;
 
 end process;
 

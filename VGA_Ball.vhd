@@ -64,7 +64,9 @@ ENTITY VGA_Ball IS
     VGA_VS 		 : out std_logic;            -- V_SYNC
     VGA_R 		 : out unsigned(7 downto 0); -- Red[9:0]
     VGA_G 		 : out unsigned(7 downto 0); -- Green[9:0]
-    VGA_B 		 : out unsigned(7 downto 0) -- Blue[9:0]
+    VGA_B 		 : out unsigned(7 downto 0); -- Blue[9:0]
+	 
+	 HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7: out STD_LOGIC_VECTOR(6 downto 0)
 
 	);
 END VGA_Ball;
@@ -103,16 +105,6 @@ COMPONENT SENSOR_CONTROL IS
 			);
 END COMPONENT;
 
-component Debounce
-  Port 
-  (
-	CLK 	: in STD_LOGIC;	-- 50 MHz input clock
-   x 		: in STD_LOGIC;	-- Push button input
-   DBx 	: out STD_LOGIC	-- Debounced push button
-  );
-end component;
-
-
 SIGNAL red_int : STD_LOGIC;
 SIGNAL green_int : STD_LOGIC;
 SIGNAL blue_int : STD_LOGIC;
@@ -125,14 +117,35 @@ SIGNAL pixel_column_int :STD_LOGIC_VECTOR(9 DOWNTO 0);
 
 --Debounce 
 SIGNAL up, down, slide_l, slide_r: STD_LOGIC;
-SIGNAL N_UP, N_DOWN, N_SLIDE_L, N_SLIDE_R: STD_LOGIC;
+SIGNAL T_UP, T_DOWN, T_SLIDE_L, T_SLIDE_R: STD_LOGIC;
 
 SIGNAL ball_X, ball_y : std_logic_vector(9 downto 0);
 SIGNAL enemy_x, enemy_y : std_logic_vector(9 downto 0);
 SIGNAL RESET : std_logic;
 SIGNAL RESET_COUNT: STD_LOGIC;
 
-SIGNAL X_CTR, Y_CTR: std_logic;
+---------SCORE BLOCK------
+component Prob4 is
+		port (en, reset, clk : in std_logic;
+			scale_clock : out std_logic;
+			TOHEX : out std_logic_vector (3 downto 0));
+end component Prob4;
+
+component bcd_seven is
+	port(SW : in std_logic_vector (3 downto 0);
+		HEX0: out std_logic_vector (6 downto 0));
+		--LSB is segment a of the display, MSB is segment g
+end component bcd_seven;
+
+component scale50MHZ is
+	port(clk, reset,en: in std_logic;
+		  clk_scale: out std_logic);
+end component scale50MHZ;
+
+signal new_clk: std_logic;
+signal C8, C7, C6, C5, C4, c3, c2, c1, c0: std_logic_vector (3 downto 0); -- Map to hex
+signal F7, F6, F5, F4, F3, f2, f1, f0: std_logic; -- Act as clock
+
 
 BEGIN
 
@@ -163,10 +176,10 @@ BEGIN
 
 	U2: ball PORT MAP
 		(reset			=> SW(0),
-		 up				=> N_up,
-		 down				=> N_down,
-		 slide_l			=> N_slide_l,
-		 slide_r			=> N_slide_r,
+		 up				=> up,
+		 down				=> down,
+		 slide_l			=> slide_l,
+		 slide_r			=> slide_r,
 		 pixel_row		=> pixel_row_int,
 		 pixel_column	=> pixel_column_int,
 		 Red				=> red_int,
@@ -175,40 +188,14 @@ BEGIN
 		 Vert_sync		=> vert_sync_int,
 		 RESET_OUT		=> RESET_COUNT
 		);
-------------------------------------------------------- USE PUSH BUTTON ------------------------------------------------
-	--INVERT THE PUSH BUTTON
---	N_UP 		<= NOT KEY(0);
---	N_DOWN	<= NOT KEY(1);
---	N_SLIDE_L<= NOT KEY(3);
---	N_SLIDE_R<= NOT KEY(2);
---USE KEY		
---	U3: Debounce Port Map
---		(CLK => clock_50,
---		 x => KEY(0),
---		 Dbx => up);
---		 
---	U4: Debounce Port Map
---		(CLK => clock_50,
---		 x => KEY(1),
---		 Dbx => down);
---		 
---	U5: Debounce Port Map
---		(CLK => clock_50,
---		 x => KEY(3),
---		 Dbx => slide_l);
---	
---	U6: Debounce Port Map
---		(CLK => clock_50,
---		 x => KEY(2),
---		 Dbx => slide_r);
 
 ------------------------------------------------------------USE SENSOR----------------------------------------------
 UP_DOWN: SENSOR_CONTROL PORT MAP
 		(	TRIG	=> GPIO(0),
 			CLOCK	=> CLOCK_50,
 			ECHO	=> GPIO(1),
-			OUT1	=> N_UP,
-			OUT2	=> N_DOWN,
+			OUT1	=> T_UP,
+			OUT2	=> T_DOWN,
 			EN		=>	'1' -- Sensor always on
 			);
 		 
@@ -216,10 +203,45 @@ L_R	: SENSOR_CONTROL PORT MAP
 		(	TRIG	=> GPIO(2),
 			CLOCK	=> CLOCK_50,
 			ECHO	=> GPIO(3),
-			OUT1	=> N_SLIDE_L,
-			OUT2	=> N_SLIDE_R,
+			OUT1	=> T_SLIDE_L,
+			OUT2	=> T_SLIDE_R,
 			EN		=>	'1' -- Sensor always on
 			);			
+
+-----------MAP SCORE
+my_new_clk: scale50MHZ port map (CLOCK_50, RESET_COUNT, '1', new_clk);
+my_counter0: Prob4 port map ('1', RESET_COUNT, new_clk, f0, c0);
+my_counter1: Prob4 port map ('1', RESET_COUNT, f0, f1, c1);
+my_counter2: Prob4 port map ('1', RESET_COUNT, f1, f2, c2);
+my_counter3: Prob4 port map ('1', RESET_COUNT, f2, f3, c3);
+my_counter4: Prob4 port map ('1', RESET_COUNT, f3, f4, c4);
+my_counter5: Prob4 port map ('1', RESET_COUNT, f4, f5, c5);
+my_counter6: Prob4 port map ('1', RESET_COUNT, f5, f6, c6);
+my_counter7: Prob4 port map ('1', RESET_COUNT, f6, f7, c7);
+bcd0: bcd_seven port map (c0, HEX0);
+bcd1: bcd_seven port map (c1, HEX1);
+bcd2: bcd_seven port map (c2, HEX2);
+bcd3: bcd_seven port map (c3, HEX3);
+bcd4: bcd_seven port map (c4, HEX4);
+bcd5: bcd_seven port map (c5, HEX5);
+bcd6: bcd_seven port map (c6, HEX6);
+bcd7: bcd_seven port map (c7, HEX7);
+
+
+choose_control: process (SW(1))
+BEGIN
+	IF(SW(1) = '1') THEN
+		UP	<= T_UP;
+		DOWN	<= T_DOWN;
+		SLIDE_L	<= T_SLIDE_L;
+		SLIDE_R	<= T_SLIDE_R;
+	ELSE
+		UP	<=	NOT KEY(0);
+		DOWN	<= NOT KEY(1);
+		SLIDE_L	<= NOT KEY(3);
+		SLIDE_R	<= NOT KEY(2);
+	END IF;
+END PROCESS;
 
 END structural;
 
