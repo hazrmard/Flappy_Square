@@ -26,7 +26,6 @@ USE IEEE.STD_LOGIC_1164.all;
 use IEEE.std_logic_arith.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
--- Bouncing Ball Video 
 
 
 ENTITY enemy IS
@@ -58,7 +57,7 @@ SIGNAL Ball_Y_motion, BAll_X_motion: std_logic_vector(9 DOWNTO 0);
 SIGNAL Ball_Y_pos, Ball_X_pos		: std_logic_vector(9 DOWNTO 0);
 SIGNAL Base_X_motion, Base_Y_motion: integer;
 
-SIGNAL count: integer:=0;
+SIGNAL count: integer:=0;	--integer that keeps track of the state of the random number generator
 SIGNAL resetn, load: std_logic;
 SIGNAL random, random1, random2, random3, random4: std_logic_vector (9 downto 0);
 SIGNAL seed: std_logic_vector (9 downto 0):="0000000" & s;
@@ -74,7 +73,7 @@ r1: LFSR_GENERIC port map (clock => vsync, resetn=>resetn, load=>load, serial_ou
 Initialize_Random: process (VSYNC)
 begin
 	
---	if count<3 then
+	if vsync='1' then
 		if count=0 then 		-- initialize random lookup table
 			resetn<='0';
 			load<='0';
@@ -87,9 +86,7 @@ begin
 			resetn<='1';
 			load<='0';
 			count<=3;
-		--end if;
---	else					-- get newer random numbers
-		elsif count=3 then
+		elsif count=3 then	-- get newer random numbers
 			random1 <= random;
 			count<=4;
 		elsif count=4 then
@@ -102,7 +99,7 @@ begin
 			random4<= random;
 			count<=3;
 		end if;
---	end if;
+	end if;
 
 end process;
 
@@ -155,26 +152,6 @@ BEGIN
 	
 	end if;
 		
-
---			-- Move ball once every vertical sync
---	WAIT UNTIL vert_sync'event and vert_sync = '1';
---			-- Bounce off top or bottom of screen
---			IF ('0' & Ball_Y_pos) >= 480 - Size THEN
---				Ball_Y_motion <= CONV_STD_LOGIC_VECTOR(-2,10);
---			ELSIF Ball_Y_pos <= Size THEN
---				Ball_Y_motion <= CONV_STD_LOGIC_VECTOR(2,10);
---			END IF;
---			
---			IF('0' & Ball_X_pos) >= 640 - Size THEN
---				Ball_X_motion <= CONV_STD_LOGIC_VECTOR(-2,10);
---			ELSIF Ball_X_pos <= Size THEN
---				Ball_X_motion <= CONV_STD_LOGIC_VECTOR(2,10);
---			END IF;
---			
---			-- Compute next ball Y position
---			Ball_Y_pos <= Ball_Y_pos + Ball_Y_motion;
---			Ball_X_pos <= Ball_X_pos + Ball_X_motion;
---END process Move_Ball;
 
 x <= BALL_X_POS;
 y <= BALL_Y_POS;
